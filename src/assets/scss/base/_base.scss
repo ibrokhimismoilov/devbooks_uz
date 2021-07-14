@@ -1,0 +1,37 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-width: 320px;
+    min-height: 100vh;
+    font-family: $rob;
+    font-weight: 400;
+    color: $text-color;
+    background: $bg-site;
+}
+
+a, a:hover, a:focus {
+    outline: none;
+    text-decoration: none;
+}
+
+.link {
+    color: #549FF9;
+    cursor: pointer;
+    
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+
+.auto-container {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 1300px;
+    padding-left: 15px;
+    padding-right: 15px;
+}

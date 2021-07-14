@@ -1,0 +1,107 @@
+.auth {
+    width: 100%;
+    min-height: 100vh;
+    // min-height: calc(100vh - 77px);
+    display: flex;
+
+    &__img {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #C9AC8C;
+    }
+
+    &__form {
+        background: #fff;
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        
+        &-inner {
+            padding: 30px 15px;
+            max-width: 360px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        &-title {
+            color: #000;
+            font-family: "Arial Black", Helvetica, sans-serif;
+            font-weight: 900;
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        &-desc {
+            color: #000;
+            font-size: 13px;
+            font-family: $rob;
+            margin-bottom: 20px;
+            &.link {
+                color: #549FF9;
+            }
+        }
+
+        &-inputbox {
+            width: 100%;
+            height: 46px;
+            margin-bottom: 17px;
+
+            input {
+                border-radius: 10px;
+                font-size: 14px;
+                line-height: 16px;
+                padding: 15px 29px;
+                display: block;
+                width: 100%;
+                height: 100%;
+                border: 1px solid #B4B4BB;
+                
+                &:focus {
+                    outline: none;
+                    border-color: #C9AC8C;
+                }
+
+                &::placeholder {
+                    color: #AAAAAA;
+                    font-size: 14px;
+                    text-transform: capitalize;
+                }
+            }
+        }
+
+        &-btn {
+            margin-top: 17px;
+            height: 46px;
+            border-radius: 23px;
+            color: #fff;
+            font-family: $rob900;
+            letter-spacing: 1px;
+            background: #152540;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #152540;
+            transition: all .3s linear;
+            cursor: pointer;
+            &:focus,
+            &:hover {
+                outline: none;
+                background: #fff;
+                color: #152540;
+            }
+        }
+    }
+}
+
+
+@media (max-width: 991px) {
+    .auth {    
+        &__img {
+        display: none;
+        }    
+    }
+}
