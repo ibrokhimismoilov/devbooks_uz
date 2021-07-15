@@ -252,16 +252,16 @@ export default function App() {
 
   return (
     <>
-      {logged ? <Navbar logged={logged} setLoggedFunc={setLogged} /> : null}
+      {logged ? <Navbar logged={logged} setLoggedFunc={(e)=>setLogged(e)} /> : null}
       <Switch>
         <Route exact path="/">
           <Home logged={logged} authors={authorsData} />
         </Route>
         <Route exact path="/sign-in">
-          <SignIn setLoggedFunc={setLogged} />
+          <SignIn setLoggedFunc={(e)=>setLogged(e)} />
         </Route>
         <Route exact path="/sign-up">
-          <SignUp setLoggedFunc={setLogged} />
+          <SignUp setLoggedFunc={(e)=>setLogged(e)} />
         </Route>
 
         {logged ? (

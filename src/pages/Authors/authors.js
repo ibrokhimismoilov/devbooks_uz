@@ -2,24 +2,25 @@ import React from "react";
 import { Link, Redirect } from "react-router-dom";
 import Header from "../../components/Header";
 import { RiBookFill, RiVolumeUpFill } from "react-icons/ri";
-// import { useEffect, useState } from "react";
-// import axios from "axios";
+import { useEffect, useState } from "react";
+import defaultImg from "../../assets/images/authors/avloniy.svg";
+import apiClient from "../../services/apiClient";
 
-export default function Authors({ logged, authors }) {
+export default function Authors({ logged }) {
 
   console.log("Authors page logged=", logged);
 
-  // const [authors, setAuthors] = useState([]);
+  const [authors, setAuthors] = useState([]);
 
-  // useEffect(() => {
-  //   axios("https://book.alitechbot.uz/api/authors")
-  //   .then(res => {
-  //     console.log(res.data.payload);
-  //     setAuthors(res.data.payload)
-  //   }).catch(err => {
-  //     console.log(err);
-  //   })
-  // }, [])
+  useEffect(() => {
+    apiClient("/authors")
+    .then(res => {
+      console.log(res.data.payload);
+      setAuthors(res.data.payload)
+    }).catch(err => {
+      console.log(err);
+    })
+  }, [])
 
   if (!logged) {
     return <Redirect to="/sign-in" />;
@@ -45,7 +46,7 @@ export default function Authors({ logged, authors }) {
                 className="authors__wrapper-item card"
               >
                 <div className="card-img">
-                  <img src={author.img} alt="author" />
+                  <img src={author.img || defaultImg} alt="author" />
                 </div>
 
                 <div className="card-body">

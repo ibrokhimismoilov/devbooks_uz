@@ -1,28 +1,62 @@
 import React, { useState } from "react";
 import { Link, Redirect } from "react-router-dom";
-import SignUpImg from "../../assets/images//register.svg";
+import InputErrorMessages from "../../components/InputErrorMessages";
+import SignUpImg from "../../assets/images/register.svg";
+import apiClient from "../../services/apiClient";
 
 export default function SignIn({ setLoggedFunc }) {
   const [register, setRegister] = useState(false);
 
   const [value, setValue] = useState({
-    firstname: "",
-    lastname: "",
+    firstName: "",
+    lastName: "",
     phone: "",
     email: "",
     password: "",
   });
+
+  const [errors, setErrors] = useState({ type: "", message: "" });
 
   const inputHandler = (e) => {
     const { value, name } = e.target;
     setValue((prevState) => ({ ...prevState, [name]: value }));
   };
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
-    localStorage.setItem("token", JSON.stringify(value));
-    setRegister(true);
-    setLoggedFunc(true);
+
+    try {
+      const { data } = await apiClient.post("/sign-up", value);
+      if (data.success) {
+        localStorage.setItem("token", data.token);
+        setRegister(true);
+        setLoggedFunc(true);
+      } else {
+        const msg = handleErrorObject(data?.msg);
+        setErrors(msg);
+      }
+    } catch (err) {
+      console.log("Register error", err.response);
+      const msg = handleErrorObject(err.response?.data?.msg);
+      setErrors(msg);
+    }
+  };
+
+  const handleErrorObject = (errorMsg = "") => {
+    if (errorMsg.includes("E11000")) {
+      return {
+        type: "email",
+        message: "This user exist. Choose another email!",
+      };
+    }
+    const errorType = errorMsg.slice(
+      errorMsg.indexOf('"'),
+      errorMsg.lastIndexOf('"')
+    );
+    return {
+      type: errorType.replace('"', "").replace("\\", ""),
+      message: errorMsg,
+    };
   };
 
   if (register) {
@@ -38,32 +72,34 @@ export default function SignIn({ setLoggedFunc }) {
         <div className="auth__form-inner">
           <h1 className="auth__form-title">Sign up</h1>
           <p className="auth__form-desc">
-            Already have an account?
+            Already have an account?{" "}
             <Link to="/sign-in" className="link">
-              {" "}
               Sign in
             </Link>
           </p>
+          <InputErrorMessages type="firstName" errorObj={errors} />
           <div className="auth__form-inputbox">
             <input
-              type="firstname"
-              placeholder="Firstname"
-              name="firstname"
-              value={value.firstname}
+              type="firstName"
+              placeholder="FirstName"
+              name="firstName"
+              value={value.firstName}
               onChange={inputHandler}
               required
             />
           </div>
+          <InputErrorMessages type="lastName" errorObj={errors} />
           <div className="auth__form-inputbox">
             <input
-              type="lastname"
-              placeholder="Lastname"
-              name="lastname"
-              value={value.lastname}
+              type="lastName"
+              placeholder="LastName"
+              name="lastName"
+              value={value.lastName}
               onChange={inputHandler}
               required
             />
           </div>
+          <InputErrorMessages type="phone" errorObj={errors} />
           <div className="auth__form-inputbox">
             <input
               type="phone"
@@ -74,6 +110,8 @@ export default function SignIn({ setLoggedFunc }) {
               required
             />
           </div>
+          <InputErrorMessages type="email" errorObj={errors} />
+
           <div className="auth__form-inputbox">
             <input
               type="email"
@@ -84,6 +122,7 @@ export default function SignIn({ setLoggedFunc }) {
               required
             />
           </div>
+          <InputErrorMessages type="password" errorObj={errors} />
           <div className="auth__form-inputbox">
             <input
               type="password"
