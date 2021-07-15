@@ -1,24 +1,31 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { Redirect, Link } from "react-router-dom";
 import Header from "../../components/Header";
-import { FaStar } from "react-icons/fa";
+// import { FaStar } from "react-icons/fa";
 import apiClient from "../../services/apiClient";
+
+import defaultBookImg from "../../assets/images/books/book.svg";
+import LoaderGrid from "../../components/Loader/LoaderGrid";
 
 export default function Books({ logged }) {
   console.log("books page logged=", logged);
+  const [loading, setLoading] = useState(false)
 
   const [books, setBooks] = useState([]);
 
   useEffect(() => {
+    setLoading(true);
     apiClient("/books")
-    .then(res => {
-      console.log(res.data.payload.docs);
-      setBooks(res.data.payload.docs)
-    }).catch(err => {
-      console.log(err);
-    })
-
-  }, [])
+      .then((res) => {
+        console.log(res.data.payload.docs);
+        setBooks(res.data.payload.docs);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
+  }, []);
 
   if (!logged) {
     return <Redirect to="/sign-in" />;
@@ -35,32 +42,40 @@ export default function Books({ logged }) {
           <button className="books__filter-btn">Sovet davri</button>
           <button className="books__filter-btn">Mustaqillik davri</button>
         </div>
-        <div className="books__wrapper">
-          {books?.map((book) => {
-            return (
-              <Link
-                key={book._id}
-                to={`/books/${book._id}`}
-                className="books__wrapper-item card"
-              >
-                <div className="card-img">
-                  <img src={book.imageLink} alt="book" />
-                </div>
 
-                <div className="card-body">
-                  <h1 className="name">
-                    {book.title}
-                  </h1>
-                  <p className="author">
-                    {book.author.firstName} {book.author.lastName}
-                  </p>
-                  <p className="books">
-                    {/* <FaStar />  */}
-                    price: ${book.price}&nbsp;
-                    ko'rilgan: {book.views}&nbsp;
-                    sahifa: {book.pages} 
-                  </p>
-                  {/* <ul>
+        <div className="books__wrapper">
+          {!loading ? (
+            books.map((book) => {
+              return (
+                <Link
+                  key={book._id}
+                  to={`/books/${book._id}`}
+                  className="books__wrapper-item card"
+                >
+                  <div className="card-img">
+                    <img
+                      src={
+                        ([".jpeg", ".jpg", ".png", ".svg"].includes(
+                          book.imageLink.slice(book.imageLink.lastIndexOf("."))
+                        ) &&
+                          book.imageLink) ||
+                        defaultBookImg
+                      }
+                      alt="book"
+                    />
+                  </div>
+
+                  <div className="card-body">
+                    <h1 className="name">{book.title}</h1>
+                    <p className="author">
+                      {book.author.firstName} {book.author.lastName}
+                    </p>
+                    <p className="books">
+                      {/* <FaStar />  */}
+                      price: ${book.price}&nbsp; ko'rilgan: {book.views}&nbsp;
+                      sahifa: {book.pages}
+                    </p>
+                    {/* <ul>
                     <li>Author Fullname: <i></i></li>
                     <li>Author year: <i>{book.author.date_of_birth}-{book.author.date_of_death}</i></li>
                     <li>Category: <i>{book.category}</i></li>
@@ -80,10 +95,13 @@ export default function Books({ logged }) {
                   <p>views: {book.}</p>
                   <p>year: {book.year}</p>
                   <p>id: {book._id}</p> */}
-                </div>
-              </Link>
-            );
-          })}
+                  </div>
+                </Link>
+              );
+            })
+          ) : (
+            <LoaderGrid />
+          )}
         </div>
       </div>
     </div>

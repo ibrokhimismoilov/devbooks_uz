@@ -38,18 +38,25 @@
         padding-bottom: 100px;
         width: 100%;
         display: flex;
-        justify-content: space-between;
+        align-items: flex-start;
+        justify-content: center;
         flex-wrap: wrap;
         margin-left: -5px;
         margin-right: -5px;
         &-item {
+            border-radius: 10px;
+            overflow: hidden;
             display: block;
             // max-width: 300px;
-            max-width: 165px;
+            max-width: 175px;
             width: 100%;
             overflow: hidden;
-            margin: 0 5px 50px 5px;
-
+            padding: 5px;
+            margin: 0 10px 50px 10px;
+            transition: all .3s linear;
+                &:hover {
+                    box-shadow: 0 5px 5px rgba(#fff, .2);
+                }
 
             .card-img {
                 width: 100%;

@@ -1,176 +1,180 @@
 .authors {
-    &-title {
+  &-title {
+    color: $text-primary;
+    font-size: 31px;
+    font-family: $rotter;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  &__filter {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 40px;
+
+    &-btn {
+      text-align: center;
+      border: none;
+      outline: none;
+      background: transparent;
+      padding: 10px;
+      font-size: 20px;
+      color: $text-color;
+      transition: 0.3s linear;
+      cursor: pointer;
+      // background: red;
+      margin-left: 25px;
+      margin-right: 25px;
+
+      &:hover,
+      &.active {
         color: $text-primary;
-        font-size: 31px;
-        font-family: $rotter;
-        text-align: center;
-        margin-bottom: 20px;
-    }    
+      }
+    }
+  }
 
-    &__filter {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        margin-bottom: 40px;
+  &__wrapper {
+    padding-bottom: 100px;
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    flex-wrap: wrap;
 
-        &-btn {
-            text-align: center;
-            border: none;
-            outline: none;
-            background: transparent;
-            padding: 10px;
-            font-size: 20px;
-            color: $text-color;
-            transition: .3s linear;
-            cursor: pointer;
-            // background: red;
-            margin-left: 25px;
-            margin-right: 25px;
+    &-item {
+      display: block;
+      max-width: 174px;
+      width: 100%;
+      border-radius: 16px;
+      overflow: hidden;
+      margin: 0 15px 30px 15px;
+      background: rgba(#fff, 0.03);
+      transition: all 0.3s linear;
+      &:hover {
+        box-shadow: 0 5px 5px rgba(#fff, 0.2);
+      }
 
-            &:hover,
-            &.active {
-                color: $text-primary
-            }
+      .card-img {
+        width: 100%;
+        height: 132px;
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: center center;
         }
+      }
+
+      .card-body {
+        background-repeat: no-repeat;
+        background-image: url("../images/card-bg.svg"),
+          url("../images/card-bg2.svg");
+        background-size: 124px 124px, 40px;
+        background-position: 150% -62px, 0% 100%;
+        background-origin: padding-box;
+        display: flex;
+        flex-direction: column;
+        padding: 8px 20px 20px;
+        text-align: center;
+      }
+
+      .name {
+        color: $text-primary;
+        font-weight: 100;
+        font-size: 18px;
+        text-transform: capitalize;
+        margin-bottom: 4px;
+      }
+
+      .year {
+        color: $text-color;
+        font-size: 12px;
+        margin-bottom: 10px;
+      }
+
+      .books {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        svg {
+          font-size: 22px;
+          margin-right: 3px;
+
+          &:last-child {
+            margin-left: 5px;
+          }
+        }
+        font-size: 16px;
+        color: $text-white;
+      }
+    }
+  }
+}
+
+@media (max-width: 440px) {
+  .authors {
+    &__filter {
+      &-btn {
+        font-size: 16px;
+        margin-left: 10px;
+        margin-right: 10px;
+      }
     }
 
     &__wrapper {
-        padding-bottom: 100px;
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        flex-wrap: wrap;
-        
-        &-item {
-            display: block;
-            max-width: 174px;
-            width: 100%;
-            border-radius: 16px;
-            overflow: hidden;
-            margin: 0 15px 30px 15px;
-            background: rgba(#fff, .03);
+      padding-bottom: 50px;
 
+      &-item {
+        max-width: 100%;
 
-            .card-img {
-                width: 100%;
-                height: 132px;
-                img {
-                    width: 100%;
-                    height: 100%;
-                    object-fit: cover;
-                    object-position: center center;
-                }
-            }
-
-            .card-body {
-                background-repeat: no-repeat;
-                background-image: url("../images/card-bg.svg"), url("../images/card-bg2.svg");
-                background-size: 124px 124px, 40px;
-                background-position: 150% -62px, 0% 100%;
-                background-origin: padding-box;
-                display: flex;
-                flex-direction: column;
-                padding: 8px 20px 20px;
-                text-align: center;
-            }
-
-            .name {
-                color: $text-primary;
-                font-weight: 100;
-                font-size: 18px;
-                text-transform: capitalize;
-                margin-bottom: 4px;
-            }
-
-            .year {
-                color: $text-color;
-                font-size: 12px;
-                margin-bottom: 10px;
-            }
-
-            .books {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                svg {
-                    font-size: 22px;
-                    margin-right: 3px;
-                    
-                    &:last-child {
-                        margin-left: 5px;
-                    }
-                }
-                font-size: 16px;
-                color: $text-white;
-            }
+        .card-img {
+          height: 200px;
         }
+
+        .card-body {
+          background-repeat: no-repeat;
+          background-image: url("../images/card-bg.svg"),
+            url("../images/card-bg2.svg");
+          background-size: 124px 124px, 40px;
+          background-position: 150% -62px, 0% 100%;
+          background-origin: padding-box;
+          display: flex;
+          flex-direction: column;
+          padding: 8px 20px 20px;
+          text-align: center;
+        }
+
+        .name {
+          color: $text-primary;
+          font-weight: 100;
+          font-size: 18px;
+          text-transform: capitalize;
+          margin-bottom: 4px;
+        }
+
+        .year {
+          color: $text-color;
+          font-size: 12px;
+          margin-bottom: 10px;
+        }
+
+        .books {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          svg {
+            font-size: 22px;
+            margin-right: 3px;
+
+            &:last-child {
+              margin-left: 5px;
+            }
+          }
+          font-size: 16px;
+          color: $text-white;
+        }
+      }
     }
-}
-
-
-@media (max-width: 440px) {
-    .authors {
-    
-        &__filter {
-            &-btn {
-                font-size: 16px;
-                margin-left: 10px;
-                margin-right: 10px;    
-            }
-        }
-    
-        &__wrapper {
-            padding-bottom: 50px;
-            
-            &-item {
-                max-width: 100%;
-        
-                .card-img {
-                    height: 200px;
-                }
-    
-                .card-body {
-                    background-repeat: no-repeat;
-                    background-image: url("../images/card-bg.svg"), url("../images/card-bg2.svg");
-                    background-size: 124px 124px, 40px;
-                    background-position: 150% -62px, 0% 100%;
-                    background-origin: padding-box;
-                    display: flex;
-                    flex-direction: column;
-                    padding: 8px 20px 20px;
-                    text-align: center;
-                }
-    
-                .name {
-                    color: $text-primary;
-                    font-weight: 100;
-                    font-size: 18px;
-                    text-transform: capitalize;
-                    margin-bottom: 4px;
-                }
-    
-                .year {
-                    color: $text-color;
-                    font-size: 12px;
-                    margin-bottom: 10px;
-                }
-    
-                .books {
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    svg {
-                        font-size: 22px;
-                        margin-right: 3px;
-                        
-                        &:last-child {
-                            margin-left: 5px;
-                        }
-                    }
-                    font-size: 16px;
-                    color: $text-white;
-                }
-            }
-        }
-    }
+  }
 }

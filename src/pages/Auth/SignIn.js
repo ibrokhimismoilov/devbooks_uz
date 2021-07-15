@@ -6,13 +6,14 @@ import apiClient from "../../services/apiClient";
 
 export default function SignIn({ setLoggedFunc }) {
   const [login, setLogin] = useState(false);
+  const [waitResAnimate, setWaitResAnimate] = useState(false)
 
   const [value, setValue] = useState({
     email: "",
     password: "",
   });
 
-  const [errors, setErrors] = useState({ type: "", message: "" });
+  const [loginError, setloginError] = useState(null);
 
   const inputHandler = (e) => {
     const { value, name } = e.target;
@@ -21,7 +22,10 @@ export default function SignIn({ setLoggedFunc }) {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-
+    setWaitResAnimate(true);
+    for (let i = 0; i < e.target.length; i++) {
+      e.target[i].setAttribute("disabled", "disabled");
+    }
     try {
       const { data } = await apiClient.post("/login", value);
       if (data.success) {
@@ -29,39 +33,42 @@ export default function SignIn({ setLoggedFunc }) {
         localStorage.setItem("docs", JSON.stringify(data.docs));
         setLoggedFunc(true); // from props
         setLogin(true);
+        setloginError(null);
+        setWaitResAnimate(false);
       } else {
-        const msg = handleErrorObject(data?.msg);
+        console.log(data);
         setLogin(false);
-        setErrors(msg);
+        const msg = data?.msg;
+        setloginError(msg);
+        setWaitResAnimate(false);
+        for (let i = 0; i < e.target.length; i++) {
+          e.target[i].removeAttribute("disabled");
+        }
       }
     } catch (err) {
       console.log("login Error", err.response);
-      // setLogin(false);
-      const msg = handleErrorObject(err.response?.data?.msg);
-      setErrors(msg);
+      setLogin(false);
+      const msg = err.response?.data?.msg || err.response?.data?.error;
+      setloginError(msg);
+      setWaitResAnimate(false);
+      for (let i = 0; i < e.target.length; i++) {
+        e.target[i].removeAttribute("disabled");
+      }
     }
-  };
-
-  const handleErrorObject = (errorMsg = "") => {
-    if (errorMsg.includes("E11000")) {
-      return {
-        type: "email",
-        message: "This user exist. Choose another email!",
-      };
-    }
-    const errorType = errorMsg.slice(
-      errorMsg.indexOf('"'),
-      errorMsg.lastIndexOf('"')
-    );
-    return {
-      type: errorType.replace('"', "").replace("\\", ""),
-      message: errorMsg,
-    };
   };
 
   if (login) {
     return <Redirect to="/" />;
   }
+
+  let waitAnimate = null;
+    if (waitResAnimate) {
+      waitAnimate = (
+        <div className="linear-activity">
+          <div className="indeterminate"></div>
+        </div>
+      );
+    }
 
   return (
     <div className="auth">
@@ -71,7 +78,6 @@ export default function SignIn({ setLoggedFunc }) {
       <form className="auth__form" onSubmit={submitHandler}>
         <div className="auth__form-inner">
           <h1 className="auth__form-title">Sign in</h1>
-
           <p className="auth__form-desc">
             Do not you have an account?
             <Link to="/sign-up" className="link">
@@ -87,8 +93,8 @@ export default function SignIn({ setLoggedFunc }) {
               name="email"
               value={value.email}
               onChange={inputHandler}
+              // required
             />
-            <InputErrorMessages type="email" errorObj={errors} />
           </div>
 
           <div className="auth__form-inputbox">
@@ -99,9 +105,10 @@ export default function SignIn({ setLoggedFunc }) {
               value={value.password}
               onChange={inputHandler}
             />
-            <InputErrorMessages type="password" errorObj={errors} />
           </div>
-
+          {waitAnimate}
+          {loginError && <span className="error-msg">{loginError}</span>}
+          
           <button className="auth__form-btn">Next step</button>
         </div>
       </form>

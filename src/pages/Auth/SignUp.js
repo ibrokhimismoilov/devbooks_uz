@@ -6,6 +6,7 @@ import apiClient from "../../services/apiClient";
 
 export default function SignIn({ setLoggedFunc }) {
   const [register, setRegister] = useState(false);
+  const [waitResAnimate, setWaitResAnimate] = useState(false)
 
   const [value, setValue] = useState({
     firstName: "",
@@ -24,21 +25,36 @@ export default function SignIn({ setLoggedFunc }) {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-
+    setWaitResAnimate(true);
+    for (let i = 0; i < e.target.length; i++) {
+      e.target[i].setAttribute("disabled", "disabled");
+    }
     try {
       const { data } = await apiClient.post("/sign-up", value);
       if (data.success) {
         localStorage.setItem("token", data.token);
         setRegister(true);
         setLoggedFunc(true);
+        setWaitResAnimate(false);
+        for (let i = 0; i < e.target.length; i++) {
+          e.target[i].removeAttribute("disabled");
+        }
       } else {
         const msg = handleErrorObject(data?.msg);
         setErrors(msg);
+        setWaitResAnimate(false);
+        for (let i = 0; i < e.target.length; i++) {
+          e.target[i].removeAttribute("disabled");
+        }
       }
     } catch (err) {
       console.log("Register error", err.response);
       const msg = handleErrorObject(err.response?.data?.msg);
       setErrors(msg);
+      setWaitResAnimate(false);
+      for (let i = 0; i < e.target.length; i++) {
+        e.target[i].removeAttribute("disabled");
+      }
     }
   };
 
@@ -63,6 +79,17 @@ export default function SignIn({ setLoggedFunc }) {
     return <Redirect to="/" />;
   }
 
+  let waitAnimate = null;
+  if (waitResAnimate) {
+    waitAnimate = (
+      <div className="linear-activity">
+        <div className="indeterminate"></div>
+      </div>
+    );
+  }
+
+
+
   return (
     <div className="auth">
       <div className="auth__img">
@@ -85,7 +112,7 @@ export default function SignIn({ setLoggedFunc }) {
               name="firstName"
               value={value.firstName}
               onChange={inputHandler}
-              required
+              // required
             />
           </div>
           <InputErrorMessages type="lastName" errorObj={errors} />
@@ -96,7 +123,7 @@ export default function SignIn({ setLoggedFunc }) {
               name="lastName"
               value={value.lastName}
               onChange={inputHandler}
-              required
+              // required
             />
           </div>
           <InputErrorMessages type="phone" errorObj={errors} />
@@ -107,7 +134,8 @@ export default function SignIn({ setLoggedFunc }) {
               name="phone"
               value={value.phone}
               onChange={inputHandler}
-              required
+              placeholder="+998000000000"
+              // required
             />
           </div>
           <InputErrorMessages type="email" errorObj={errors} />
@@ -119,7 +147,7 @@ export default function SignIn({ setLoggedFunc }) {
               name="email"
               value={value.email}
               onChange={inputHandler}
-              required
+              // required
             />
           </div>
           <InputErrorMessages type="password" errorObj={errors} />
@@ -130,9 +158,10 @@ export default function SignIn({ setLoggedFunc }) {
               name="password"
               value={value.password}
               onChange={inputHandler}
-              required
+              // required
             />
           </div>
+          {waitAnimate}
 
           <button className="auth__form-btn">Next step</button>
         </div>
