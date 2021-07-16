@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 import SignInImg from "../../assets/images/login.svg";
-import InputErrorMessages from "../../components/InputErrorMessages";
 import apiClient from "../../services/apiClient";
 
 export default function SignIn({ setLoggedFunc }) {
@@ -46,7 +45,7 @@ export default function SignIn({ setLoggedFunc }) {
         }
       }
     } catch (err) {
-      console.log("login Error", err.response);
+      console.log("login Error", err);
       setLogin(false);
       const msg = err.response?.data?.msg || err.response?.data?.error;
       setloginError(msg);
