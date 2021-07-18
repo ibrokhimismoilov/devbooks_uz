@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Redirect, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Header from "../../components/Header";
 // import { FaStar } from "react-icons/fa";
 import apiClient from "../../services/apiClient";
@@ -7,8 +7,7 @@ import apiClient from "../../services/apiClient";
 import defaultBookImg from "../../assets/images/books/book.svg";
 import LoaderGrid from "../../components/Loader/LoaderGrid";
 
-export default function Books({ logged }) {
-  console.log("books page logged=", logged);
+export default function Books() {
   const [loading, setLoading] = useState(false)
 
   const [books, setBooks] = useState([]);
@@ -26,10 +25,6 @@ export default function Books({ logged }) {
         setLoading(false);
       });
   }, []);
-
-  if (!logged) {
-    return <Redirect to="/sign-in" />;
-  }
 
   return (
     <div className="books">

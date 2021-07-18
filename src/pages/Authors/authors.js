@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Header from "../../components/Header";
 import { RiBookFill, RiVolumeUpFill } from "react-icons/ri";
 import { useEffect, useState } from "react";
@@ -7,9 +7,7 @@ import defaultImg from "../../assets/images/authors/avloniy.svg";
 import apiClient from "../../services/apiClient";
 import LoaderGrid from "../../components/Loader/LoaderGrid";
 
-export default function Authors({ logged }) {
-  console.log("Authors page logged=", logged);
-
+export default function Authors() {
   const [authors, setAuthors] = useState([]);
   const [loading, setLoading] = useState(false)
 
@@ -27,10 +25,6 @@ export default function Authors({ logged }) {
         setLoading(false);
       });
   }, []);
-
-  if (!logged) {
-    return <Redirect to="/sign-in" />;
-  }
 
   return (
     <div className="authors">

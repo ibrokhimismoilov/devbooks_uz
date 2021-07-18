@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link, Redirect } from "react-router-dom";
 import InputErrorMessages from "../../components/InputErrorMessages";
 import SignUpImg from "../../assets/images/register.svg";
 import apiClient from "../../services/apiClient";
+import AuthContext from '../../context/AuthContext';
 
 export default function SignIn({ setLoggedFunc }) {
   const [register, setRegister] = useState(false);
-  const [waitResAnimate, setWaitResAnimate] = useState(false)
+  const [waitResAnimate, setWaitResAnimate] = useState(false);
+  const context = useContext(AuthContext);
 
   const [value, setValue] = useState({
     firstName: "",
@@ -32,10 +34,12 @@ export default function SignIn({ setLoggedFunc }) {
     try {
       const { data } = await apiClient.post("/sign-up", value);
       if (data.success) {
-        localStorage.setItem("token", data.token);
         setRegister(true);
         setLoggedFunc(true);
         setWaitResAnimate(false);
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
+        context.setAuthDetails(data.user);
         for (let i = 0; i < e.target.length; i++) {
           e.target[i].removeAttribute("disabled");
         }
@@ -88,8 +92,6 @@ export default function SignIn({ setLoggedFunc }) {
     );
   }
 
-
-
   return (
     <div className="auth">
       <div className="auth__img">
@@ -134,7 +136,7 @@ export default function SignIn({ setLoggedFunc }) {
               name="phone"
               value={value.phone}
               onChange={inputHandler}
-              placeholder="+998000000000"
+              placeholder={"+998000000000"}
               // required
             />
           </div>

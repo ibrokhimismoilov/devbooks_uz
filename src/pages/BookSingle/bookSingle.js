@@ -35,27 +35,27 @@ export default function BookSingle({ books }) {
           book &&
           <>
             <img src={book.imageLink} alt="" />
-            <p>Book title: {book.title}</p>
-            <p>Book desc: {book.description}</p>
-            <p>Book country: {book.country}</p>
-            <p>Book author firstName: {book.author.firstName}</p>
-            <p>Book author lastName: {book.author.lastName}</p>
-            <p>Book author id: {book.author._id}</p>
-            <p>Book author date_of_birth: {book.author.date_of_birth}</p>
-            <p>Book author date_of_death: {book.author.date_of_death}</p>
-            <p>Book author __v: {book.author.__v}</p>
-            <p>Book isPublished: {book.isPublished}</p>
-            <p>Book language: {book.language}</p>
-            <p>Book link: {book.link}</p>
-            <p>Book pages: {book.pages}</p>
-            <p>Book price: {book.price}</p>
-            <p>Book rate: {book.rate}</p>
-            <p>Book updatedAt: {book.updatedAt}</p>
-            <p>Book views: {book.views}</p>
-            <p>Book year: {book.year}</p>
-            <p>Book year: {book.year}</p>
-            <p>Book id: {book._id}</p>
-            <p>Book __v: {book.__v}</p>
+            <p>Book title:  <i>{book.title}</i></p>
+            <p>Book desc: <i>{book.description}</i></p>
+            <p>Book country:  <i>{book.country}</i></p>
+            <p>Book author firstName: <i>{book.author.firstName}</i></p>
+            <p>Book author lastName: <i>{book.author.lastName}</i></p>
+            <p>Book author id: <i>{book.author._id}</i></p>
+            <p>Book author date_of_birth: <i>{book.author.date_of_birth}</i></p>
+            <p>Book author date_of_death: <i>{book.author.date_of_death}</i></p>
+            <p>Book author __v: <i>{book.author.__v}</i></p>
+            <p>Book isPublished: <i>{book.isPublished}</i> </p>
+            <p>Book language: <i>{book.language}</i> </p>
+            <p>Book link: <i>{book.link}</i> </p>
+            <p>Book pages: <i>{book.pages}</i> </p>
+            <p>Book price: <i>{book.price}</i> </p>
+            <p>Book rate: <i>{book.rate}</i> </p>
+            <p>Book updatedAt: <i>{book.updatedAt}</i> </p>
+            <p>Book views: <i>{book.views}</i> </p>
+            <p>Book year: <i>{book.year}</i> </p>
+            <p>Book year: <i>{book.year}</i> </p>
+            <p>Book id: <i>{book._id}</i> </p>
+            <p>Book __v: <i>{book.__v}</i> </p>
           </>
         }
       </div>

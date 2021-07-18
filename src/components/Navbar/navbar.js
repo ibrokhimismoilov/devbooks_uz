@@ -1,14 +1,10 @@
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
 import { NavbarSection } from "./navbarStyled";
+import userImg from "../../assets/images/avatar.svg";
+import {BsChevronDown} from "react-icons/bs";
 
-export default function Navbar({ logged, setLoggedFunc }) {
-  
-  const logoutHandler = () => {
-    localStorage.removeItem("token");
-    setLoggedFunc(false)
-  };
-
+export default function Navbar({ logoutHandler, userName }) {
   return (
     <NavbarSection className="navbar">
       <div className="auto-container">
@@ -28,24 +24,20 @@ export default function Navbar({ logged, setLoggedFunc }) {
           </NavLink>
         </nav>
 
-        {logged ? (
-          <div className="navbar__user">
-            {/* <img src="" alt="" /> */}
-            <span  className="navbar__auth-link" onClick={logoutHandler}>
+        <div className="navbar__user">
+          <div className="navbar__user-title">
+            <img className="navbar__user-img" src={userImg} alt="avatar" />
+            <BsChevronDown />
+          </div>
+          <div className="navbar__user-dropdown">
+            <Link className="navbar__user-link" to="/user">
+              {userName}
+            </Link>
+            <span className="navbar__user-link" onClick={logoutHandler}>
               Log out
             </span>
           </div>
-        ) : (
-          <div className="navbar__auth">
-            <NavLink exact to="/sign-in" className="navbar__auth-link">
-              Sign in
-            </NavLink>
-            <NavLink exact to="/sign-up" className="navbar__auth-link">
-              Sign up
-            </NavLink>
-          </div>
-        )}
-
+        </div>
         <div className="navbar__toggle">
           <span className="navbar__toggle-icon"></span>
         </div>

@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link, Redirect } from "react-router-dom";
 import SignInImg from "../../assets/images/login.svg";
 import apiClient from "../../services/apiClient";
+import AuthContext from "../../context/AuthContext";
 
-export default function SignIn({ setLoggedFunc }) {
+export default function SignIn() {
   const [login, setLogin] = useState(false);
-  const [waitResAnimate, setWaitResAnimate] = useState(false)
+  const [waitResAnimate, setWaitResAnimate] = useState(false);
+  const context = useContext(AuthContext);
 
   const [value, setValue] = useState({
     email: "",
@@ -28,16 +30,16 @@ export default function SignIn({ setLoggedFunc }) {
     try {
       const { data } = await apiClient.post("/login", value);
       if (data.success) {
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("docs", JSON.stringify(data.docs));
-        setLoggedFunc(true); // from props
         setLogin(true);
         setloginError(null);
         setWaitResAnimate(false);
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
+        context.setAuthDetails(data.user);
       } else {
         console.log(data);
-        setLogin(false);
         const msg = data?.msg;
+        setLogin(false);
         setloginError(msg);
         setWaitResAnimate(false);
         for (let i = 0; i < e.target.length; i++) {
@@ -61,13 +63,13 @@ export default function SignIn({ setLoggedFunc }) {
   }
 
   let waitAnimate = null;
-    if (waitResAnimate) {
-      waitAnimate = (
-        <div className="linear-activity">
-          <div className="indeterminate"></div>
-        </div>
-      );
-    }
+  if (waitResAnimate) {
+    waitAnimate = (
+      <div className="linear-activity">
+        <div className="indeterminate"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="auth">
@@ -107,7 +109,7 @@ export default function SignIn({ setLoggedFunc }) {
           </div>
           {waitAnimate}
           {loginError && <span className="error-msg">{loginError}</span>}
-          
+
           <button className="auth__form-btn">Next step</button>
         </div>
       </form>
