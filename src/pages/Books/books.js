@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Header from "../../components/Header";
-// import { FaStar } from "react-icons/fa";
 import apiClient from "../../services/apiClient";
 
 import defaultBookImg from "../../assets/images/books/book.svg";
 import LoaderGrid from "../../components/Loader/LoaderGrid";
 
 export default function Books() {
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
   const [books, setBooks] = useState([]);
 
@@ -45,23 +44,27 @@ export default function Books() {
                 <Link
                   key={book._id}
                   to={`/books/${book._id}`}
-                  className="books__wrapper-item card"
+                  className="books__wrapper-item"
                 >
-                  <div className="card-img">
+                  <div className="img">
                     <img
                       src={
-                        ([".jpeg", ".jpg", ".png", ".svg"].includes(
+                        [".jpeg", ".jpg", ".png", ".svg"].includes(
                           book.imageLink.slice(book.imageLink.lastIndexOf("."))
-                        ) &&
-                          book.imageLink) ||
-                        defaultBookImg
+                        ) && book.imageLink.startsWith("http")
+                          ? book.imageLink
+                          : defaultBookImg
                       }
                       alt="book"
                     />
                   </div>
 
-                  <div className="card-body">
-                    <h1 className="name">{book.title}</h1>
+                  <div className="body">
+                    <h1 className="name">
+                      {book.title.length > 30
+                        ? book.title.slice(0, 27) + "..."
+                        : book.title}
+                    </h1>
                     <p className="author">
                       {book.author.firstName} {book.author.lastName}
                     </p>

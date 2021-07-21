@@ -5,13 +5,13 @@ import { Route, Switch, Redirect } from "react-router-dom";
 import "./assets/scss/App.scss";
 
 // Pages
+import NotFound from "./pages/NotFound";
 import Navbar from "./components/Navbar";
 import SignIn from "./pages/Auth/SignIn";
 import SignUp from "./pages/Auth/SignUp";
 import Authors from "./pages/Authors";
 import Books from "./pages/Books";
-import Home from "./pages/Home";
-import NotFound from "./pages/NotFound";
+// import Home from "./pages/Home";
 import AuthorSingle from "./pages/AuthorSingle";
 import BookSingle from "./pages/BookSingle";
 import UserPage from "./pages/UserPage";
@@ -35,10 +35,9 @@ export default function App() {
     setAuthDetails(initialState);
   };
 
-  let user = JSON.parse(localStorage.user || "{}");
-
+  let user = JSON.parse(localStorage.user);
   useEffect(() => {
-    user = JSON.parse(localStorage.user || "{}");
+    user = JSON.parse(localStorage.user);
     const token = localStorage.token;
 
     if (token) {
@@ -67,18 +66,18 @@ export default function App() {
 
   return (
     <AuthContext.Provider value={{ setAuthDetails }}>
-      <Redirect exact to="/" />
+      <Redirect exact to="/books" />
       <Navbar logoutHandler={logoutHandler} userName={user?.firstName} />
       <Switch>
         {/* <Route exact path="/" component={Home} /> */}
-        <Route exact path="/user-settings" component={UserSettings} />
-        <Route exact path={"/authors"} component={Authors} />
-        <Route exact path="/authors/:id" component={AuthorSingle} />
         <Route exact path={["/books", "/"]} component={Books} />
         <Route exact path="/books/:id" component={BookSingle} />
+        <Route exact path={"/authors"} component={Authors} />
+        <Route exact path="/authors/:id" component={AuthorSingle} />
         <Route exact path="/user">
           <UserPage user={user} />
         </Route>
+        <Route exact path="/user-settings" component={UserSettings} />
         <Route component={NotFound} />
       </Switch>
     </AuthContext.Provider>

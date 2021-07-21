@@ -23,7 +23,6 @@
       color: $text-color;
       transition: 0.3s linear;
       cursor: pointer;
-      // background: red;
       margin-left: 25px;
       margin-right: 25px;
 
@@ -58,7 +57,7 @@
         box-shadow: 0 5px 5px rgba(#fff, 0.2);
       }
 
-      .card-img {
+      .img {
         width: 100%;
         height: 245px;
         // height: 400px;
@@ -70,7 +69,7 @@
         }
       }
 
-      .card-body {
+      .body {
         display: flex;
         flex-direction: column;
         padding-top: 17px;
