@@ -18,6 +18,7 @@ import UserPage from "./pages/UserPage";
 
 // Contexts
 import AuthContext from "./context/AuthContext";
+import UserSettings from "./pages/UserSettings";
 
 const initialState = {
   token: null,
@@ -55,6 +56,7 @@ export default function App() {
       <AuthContext.Provider value={{ setAuthDetails }}>
         <Redirect exact to="/sign-in" />
         <Switch>
+          <Route component={UserSettings} exact path="/" />
           <Route component={SignIn} exact path="/sign-in" />
           <Route component={SignUp} exact path="/sign-up" />
           <Route component={SignIn} />
@@ -69,6 +71,7 @@ export default function App() {
       <Navbar logoutHandler={logoutHandler} userName={user?.firstName} />
       <Switch>
         {/* <Route exact path="/" component={Home} /> */}
+        <Route exact path="/user-settings" component={UserSettings} />
         <Route exact path={"/authors"} component={Authors} />
         <Route exact path="/authors/:id" component={AuthorSingle} />
         <Route exact path={["/books", "/"]} component={Books} />
