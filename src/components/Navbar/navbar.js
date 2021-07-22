@@ -4,8 +4,9 @@ import { NavbarSection } from "./navbarStyled";
 import userImg from "../../assets/images/avatar.svg";
 import { BsChevronDown } from "react-icons/bs";
 
-export default function Navbar({ logout, userName }) {
+export default function Navbar({ logout, }) {
   const [mobileToggler, setMobileToggler] = useState(false);
+  const {firstName} = JSON.parse(localStorage.getItem("user"));
 
   const logoutHandler = () => {
     setMobileToggler(false); 
@@ -61,15 +62,15 @@ export default function Navbar({ logout, userName }) {
               className="navbar__user-link"
               to="/user"
             >
-              {userName}
+              {firstName}
             </Link>
-            {/* <Link
+            <Link
               onClick={() => setMobileToggler(false)}
               className="navbar__user-link"
               to="/user-settings"
             >
               Settings
-            </Link> */}
+            </Link>
             <span
               className="navbar__user-link"
               onClick={logoutHandler}
@@ -80,7 +81,7 @@ export default function Navbar({ logout, userName }) {
         </div>
         <div
           onClick={() => setMobileToggler((state) => !state)}
-          className="navbar__toggle"
+          className={`navbar__toggle ${mobileToggler  ? "open" : ""}`}
         >
           <span className="navbar__toggle-icon"></span>
         </div>

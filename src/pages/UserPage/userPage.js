@@ -1,6 +1,7 @@
 import React from 'react'
 
-export default function UserPage({user}) {
+export default function UserPage() {
+  const user = JSON.parse(localStorage.user)
   return (
     <div className="auto-container">
       <h1>Hi {user.firstName}</h1>

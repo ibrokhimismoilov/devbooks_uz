@@ -8,6 +8,7 @@ export default function SignIn() {
   const [login, setLogin] = useState(false);
   const [waitResAnimate, setWaitResAnimate] = useState(false);
   const context = useContext(AuthContext);
+
   const [value, setValue] = useState({
     email: "",
     password: "",
@@ -20,7 +21,8 @@ export default function SignIn() {
     setValue((prevState) => ({ ...prevState, [name]: value }));
   };
 
-  console.log(context);
+  // let aa = context.user;
+  // console.log(aa?.token);
 
   const submitHandler = async (e) => {
     e.preventDefault();

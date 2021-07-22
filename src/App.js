@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Redirect, Route, Switch } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 
 // assets
 import "./assets/scss/App.scss";
@@ -28,16 +28,15 @@ const initialState = {
 
 export default function App() {
   const [authDetails, setAuthDetails] = useState(initialState);
-  
+
   const logoutHandler = () => {
     localStorage.removeItem("token");
     setAuthDetails(initialState);
   };
-  
+
   useEffect(() => {
     const token = localStorage.token;
     const user = JSON.stringify(localStorage.getItem("user") || "{}");
-    
     if (token) {
       setAuthDetails((state) => ({
         ...state,
@@ -47,14 +46,13 @@ export default function App() {
       }));
     }
   }, []);
-  
+
   const { user, token } = authDetails;
 
   if (token) {
     return (
-      <AuthContext.Provider value={{setAuthDetails}}>
-        <Redirect to="/" />
-        <Navbar logout={logoutHandler} userName={user?.firstName} />
+      <AuthContext.Provider value={{ setAuthDetails }}>
+        <Navbar logout={logoutHandler} />
         <Switch>
           <Route exact path="/" component={Home} />
           <Route exact path="/books" component={Books} />
@@ -62,9 +60,7 @@ export default function App() {
           <Route exact path="/authors" component={Authors} />
           <Route exact path="/authors/:id" component={AuthorSingle} />
           <Route exact path="/user-settings" component={UserSettings} />
-          <Route exact path="/user">
-            <UserPage user={user} />
-          </Route>
+          <Route exact path="/user" component={UserPage} />
           <Route component={NotFound} />
         </Switch>
       </AuthContext.Provider>
@@ -72,7 +68,7 @@ export default function App() {
   }
 
   return (
-    <AuthContext.Provider value={{setAuthDetails}}>
+    <AuthContext.Provider value={{ setAuthDetails }}>
       <Switch>
         <Route component={SignIn} exact path="/sign-in" />
         <Route component={SignUp} exact path="/sign-up" />
