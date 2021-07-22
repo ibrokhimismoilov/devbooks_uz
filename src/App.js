@@ -11,7 +11,7 @@ import SignIn from "./pages/Auth/SignIn";
 import SignUp from "./pages/Auth/SignUp";
 import Authors from "./pages/Authors";
 import Books from "./pages/Books";
-// import Home from "./pages/Home";
+import Home from "./pages/Home";
 import AuthorSingle from "./pages/AuthorSingle";
 import BookSingle from "./pages/BookSingle";
 import UserPage from "./pages/UserPage";
@@ -50,15 +50,21 @@ export default function App() {
     }
   }, []);
 
-  if (!token) {
+  if (token) {
     return (
       <AuthContext.Provider value={{ setAuthDetails }}>
-        <Redirect exact to="/sign-in" />
+        <Navbar logoutHandler={logoutHandler} userName={user?.firstName} />
         <Switch>
-          <Route component={UserSettings} exact path="/" />
-          <Route component={SignIn} exact path="/sign-in" />
-          <Route component={SignUp} exact path="/sign-up" />
-          <Route component={SignIn} />
+          <Route exact path="/" component={Home} />
+          <Route exact path={["/", "/books"]} component={Books} />
+          <Route exact path="/books/:id" component={BookSingle} />
+          <Route exact path={"/authors"} component={Authors} />
+          <Route exact path="/authors/:id" component={AuthorSingle} />
+          <Route exact path="/user">
+            <UserPage user={user} />
+          </Route>
+          <Route exact path="/user-settings" component={UserSettings} />
+          <Route component={NotFound} />
         </Switch>
       </AuthContext.Provider>
     );
@@ -66,20 +72,13 @@ export default function App() {
 
   return (
     <AuthContext.Provider value={{ setAuthDetails }}>
-      <Redirect exact to="/books" />
-      <Navbar logoutHandler={logoutHandler} userName={user?.firstName} />
       <Switch>
-        {/* <Route exact path="/" component={Home} /> */}
-        <Route exact path={["/books", "/"]} component={Books} />
-        <Route exact path="/books/:id" component={BookSingle} />
-        <Route exact path={"/authors"} component={Authors} />
-        <Route exact path="/authors/:id" component={AuthorSingle} />
-        <Route exact path="/user">
-          <UserPage user={user} />
-        </Route>
-        <Route exact path="/user-settings" component={UserSettings} />
-        <Route component={NotFound} />
+        <Route component={UserSettings} exact path="/" />
+        <Route component={SignIn} exact path="/sign-in" />
+        <Route component={SignUp} exact path="/sign-up" />
+        <Route component={SignIn} />
       </Switch>
     </AuthContext.Provider>
   );
+
 }
