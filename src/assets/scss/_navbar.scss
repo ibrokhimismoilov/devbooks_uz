@@ -3,6 +3,7 @@
     z-index: 10;
     width: 100%;
     border-bottom: 1px solid rgba(#fff, .1);
+    padding: 0;
 
     & > .auto-container {
         width: 100%;
@@ -85,11 +86,12 @@
         display: flex;
         align-items: center;
         justify-content: flex-end;
-        
+        background: red;
         &-title {
+            
             height: 100%;
-            // padding-top: 17px;
-            // padding-bottom: 17px;
+            padding-top: 17px;
+            padding-bottom: 17px;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -117,7 +119,6 @@
             flex-direction: column;
             padding: 15px;
             background: lighten($bg-site, 10%);
-        
             &:hover {
                 display: flex;
                 animation: LeftToRight .5s linear forwards;

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import apiClient from "../../services/apiClient";
 import defaultBookImg from "../../assets/images/books/book.svg";
+import LoaderGrid from "../../components/Loader/LoaderGrid";
 
 export default function BookSingle({ books }) {
   const [book, setBook] = useState(false);
@@ -32,7 +33,7 @@ export default function BookSingle({ books }) {
     <div className="book-single">
       <div className="auto-container">
         <h1 align="center">Book single page</h1>
-        {book && (
+        {book ? (
           <>
             <img
               src={
@@ -108,7 +109,7 @@ export default function BookSingle({ books }) {
               Book __v: <i>{book.__v}</i>{" "}
             </p>
           </>
-        )}
+        ): <LoaderGrid />}
       </div>
     </div>
   );

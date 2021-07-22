@@ -45,6 +45,7 @@ export default function SignIn({ setLoggedFunc }) {
         }
       } else {
         const msg = handleErrorObject(data?.msg);
+        setRegister(false);
         setErrors(msg);
         setWaitResAnimate(false);
         for (let i = 0; i < e.target.length; i++) {
@@ -54,6 +55,7 @@ export default function SignIn({ setLoggedFunc }) {
     } catch (err) {
       console.log("Register error", err.response);
       const msg = handleErrorObject(err.response?.data?.msg);
+      setRegister(false);
       setErrors(msg);
       setWaitResAnimate(false);
       for (let i = 0; i < e.target.length; i++) {
@@ -132,7 +134,6 @@ export default function SignIn({ setLoggedFunc }) {
           <div className="auth__form-inputbox">
             <input
               type="phone"
-              placeholder="Phone"
               name="phone"
               value={value.phone}
               onChange={inputHandler}

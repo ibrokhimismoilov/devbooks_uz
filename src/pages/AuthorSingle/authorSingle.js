@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import LoaderGrid from "../../components/Loader/LoaderGrid";
 import apiClient from "../../services/apiClient";
 
 export default function AuthorSingle({ authors }) {
@@ -32,7 +33,7 @@ export default function AuthorSingle({ authors }) {
     <div className="book-single">
       <div className="auto-container">
         <h1 align="center">Author single page</h1>
-        {author && (
+        {author ? (
           <>
             <p>Author firstName: {author.firstName}</p>
             <p>Author lastName: {author.lastName}</p>
@@ -41,7 +42,7 @@ export default function AuthorSingle({ authors }) {
             <p>Author date_of_death: {author.date_of_death}</p>
             <p>Author __v: {author.__v}</p>
           </>
-        )}
+        ) : <LoaderGrid />}
       </div>
     </div>
   );
