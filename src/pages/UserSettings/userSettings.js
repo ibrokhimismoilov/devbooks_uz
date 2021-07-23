@@ -1,5 +1,7 @@
 import React, { useState, Suspense, lazy } from "react";
 const TabProfile = lazy(() => import("./tabProfile"));
+const TabSecurity = lazy(() => import("./tabSecurity"));
+const TabSettings = lazy(() => import("./tabSettings"));
 
 const navs = [
   { idx: 0, number: 1, text: "My account", desc: null },
@@ -33,13 +35,15 @@ export default function UserSettings() {
     <section className="user-settings auto-container">
       <ul className="user-settings__nav">{userSettingsNavs}</ul>
       <div className="user-settings__tab">
-        <Suspense fallback={<h1 className="bg-danger">Loading...</h1>}>
-          {activeIdx === 2 ? (
-            <h1>Tab3</h1>
-          ) : activeIdx === 1 ? (
-            <h1>Tab2</h1>
-          ) : (
+        <Suspense
+          fallback={<h1 className="text-primary text-center">Loading...</h1>}
+        >
+          {activeIdx === 0 ? (
             <TabProfile />
+          ) : activeIdx === 1 ? (
+            <TabSecurity />
+          ) : (
+            <TabSettings />
           )}
         </Suspense>
       </div>

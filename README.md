@@ -3,7 +3,7 @@
   <img alt="Version" src="https://img.shields.io/badge/version-0.1.0-blue.svg?cacheSeconds=2592000" />
 </p>
 
-> This is React book app store fro learning Reactjs
+> This is React book app store for learning Reactjs
 
 ### 🏠 [Homepage](devbooks.uz)
 
@@ -29,7 +29,7 @@ yarn test
 
 👤 **Ibrokhim Ismoilov**
 
-* Website: http://Ibrokhim.uz
+* Website: https://Ibrokhim.uz
 * Github: [@ibrokhim017](https://github.com/ibrokhim017)
 
 ## Show your support

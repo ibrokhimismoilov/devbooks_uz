@@ -1,6 +1,6 @@
 .user-settings {
-  margin-top: 30px;
-  min-height: 100%;
+  padding-bottom: 100px;
+
   &__nav {
     padding: 0;
     display: flex;
@@ -22,8 +22,6 @@
       &.active {
         border-bottom: none;
         background: rgba(#fff, 0.2);
-        // color: #464e5f;
-
         .number {
           color: #fff;
           background: #152540;
@@ -51,6 +49,152 @@
       }
     }
   }
+
+  &__tab-item {
+    padding-top: 40px;
+    display: flex;
+    .left {
+      flex: 0 0 25%;
+      display: flex;
+      justify-content: center;
+      margin-right: 15px;
+      .uploadImg {
+        position: relative;
+        max-width: 175px;
+        width: 100%;
+        max-height: 175px;
+        height: 100%;
+        img {
+          width: 100%;
+          height: 100%;
+          border-radius: 50%;
+          object-fit: cover;
+          object-position: center;
+        }
+        label {
+          position: absolute;
+          right: 7px;
+          bottom: -14px;
+          width: 50px;
+          height: 50px;
+          font-size: 32px;
+          border-radius: 4px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: #f3f6f9;
+          box-shadow: 0 4px 4px rgba(#fff, 0.25);
+          color: #464e5f;
+          cursor: pointer;
+        }
+      }
+    }
+
+    .right {
+      flex: 0 0 calc(75% - 15px);
+      &.security-tab {
+        margin-inline: auto;
+        max-width: 710px;
+        width: 100%;
+        flex: 0 0 100%;
+      }
+
+      &.settings-tab {
+        margin-inline: auto;
+        max-width: 710px;
+        width: 100%;
+        flex: 0 0 100%;
+      }
+      .btn {
+        margin-top: 35px;
+        margin-left: auto;
+      }
+    }
+  }
+
+  &__title {
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 30px;
+  }
+
+  &__input-group {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: space-between;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(#ecf0f3, 0.5);
+  }
+
+  &__inputbox {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 22px;
+
+    label {
+      font-size: 14px;
+      margin-bottom: 7px;
+    }
+
+    .input-control {
+      border: none;
+      width: 100%;
+      height: 44px;
+      border-radius: 4px;
+      color: #464e5f;
+      padding-left: 20px;
+      padding-right: 20px;
+      font-size: 14px;
+      background: #f3f6f9;
+
+      &:hover,
+      &:focus {
+        outline: none;
+        background: #fff;
+      }
+    }
+
+    .warning-text {
+      font-size: 12px;
+      color: #b5b5c3;
+      margin-top: 4px;
+      &.err {
+        color: red;
+      }
+    }
+
+    &.inputbox_50 {
+      width: calc(50% - 11px);
+    }
+
+    .switch-theme {
+      box-shadow: 0 4px 4px rgba(#fff, .25);
+      position: relative;
+      display: block;
+      border-radius: 15px;
+      height: 30px;
+      width: 87px;
+      background: #f3f6f9;
+
+      &__inner {
+        position: absolute;
+        left: 2px;
+        top: 2px;
+        z-index: 1;
+        display: block;
+        height: 26px;
+        width: 26px;
+        border-radius: 50%;
+        background: #3699ff;
+        transition: all .3s linear;
+      }
+    }
+
+    .switch-control:checked ~ .switch-theme .switch-theme__inner {
+      left: 59px;
+    }
+  }
 }
 
 @media screen and (max-width: 767px) {
@@ -58,16 +202,49 @@
     margin-top: 10px;
     width: 100%;
     &__nav {
-        background: red;
-        width: 100%;
-        flex-wrap: wrap;
+      width: 100%;
+      flex-wrap: wrap;
+      margin-bottom: 30px;
       &-item {
         padding: 15px;
-        max-width: calc(50%);
-        flex: 0 0 calc(50%);
+        max-width: 100%;
+        flex: 100%;
         width: 100%;
-        margin-right: 0!important;
+        margin-right: 0 !important;
+      }
     }
+    &__tab-item {
+      flex-direction: column;
+      .left {
+        flex: 0 0 100%;
+        margin-right: 0;
+        .uploadImg {
+          max-width: 200px;
+          max-height: 200px;
+          label {
+            right: 10px;
+            bottom: 0;
+            width: 40px;
+            height: 40px;
+            font-size: 24px;
+          }
+        }
+      }
+      .right {
+        flex: 0 0 100%;
+
+        .inputbox {
+          margin-bottom: 15px;
+
+          &.inputbox_50 {
+            width: 100%;
+          }
+        }
+        .btn {
+          margin-top: 15px;
+          margin-right: auto;
+        }
+      }
     }
   }
 }
