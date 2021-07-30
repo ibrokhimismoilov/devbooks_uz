@@ -9,6 +9,9 @@ export default function SignIn() {
   const [waitResAnimate, setWaitResAnimate] = useState(false);
   const context = useContext(AuthContext);
 
+  // const dispatch = useDispatch();
+  // const user = useSelector(state => state.user);
+
   const [value, setValue] = useState({
     email: "",
     password: "",
@@ -39,6 +42,7 @@ export default function SignIn() {
         localStorage.setItem("token", data.token);
         localStorage.setItem("user", JSON.stringify(data.user));
         context.setAuthDetails(data.user);
+        // dispatch(updateUserAction({ user: data.user, token: data.token }));
       } else {
         console.log(data);
         const msg = data?.msg;

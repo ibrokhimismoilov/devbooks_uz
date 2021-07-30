@@ -26,12 +26,12 @@ export default function TabProfile() {
       setProfileData((state) => ({ ...state, [name]: value }));
     }
   };
-  const onSubmit = e => {
+  const onSubmit = (e) => {
     e.preventDefault();
-  }
+  };
 
   return (
-   <form className="user-settings__tab-item" onSubmit={onSubmit}>
+    <form className="user-settings__tab-item" onSubmit={onSubmit}>
       <div className="left">
         <div className="uploadImg">
           <img
@@ -63,7 +63,9 @@ export default function TabProfile() {
               value={profileData.firstName}
               onChange={inputHandler}
             />
-            <span className="warning-text err">Please enter your first name.</span>
+            <span className="warning-text err">
+              Please enter your first name.
+            </span>
           </div>
           <div className="user-settings__inputbox">
             <label>Last Name</label>
