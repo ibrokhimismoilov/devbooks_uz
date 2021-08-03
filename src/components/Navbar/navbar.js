@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useHistory } from "react-router-dom";
 import { NavbarSection } from "./navbarStyled";
 import userImg from "../../assets/images/avatar.svg";
 import { BsChevronDown } from "react-icons/bs";
@@ -10,13 +10,13 @@ export default function Navbar() {
   const [mobileToggler, setMobileToggler] = useState(false);
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
-
-  console.log(user);
+  const history = useHistory();
 
   const logoutHandler = () => {
     setMobileToggler(false);
     localStorage.clear();
     dispatch(clearUserAction());
+    history.replace("/sign-in");
   };
 
   return (
@@ -69,6 +69,20 @@ export default function Navbar() {
               to="/user"
             >
               {user?.user?.firstName}
+            </Link>
+            <Link
+              onClick={() => setMobileToggler(false)}
+              className="navbar__user-link"
+              to="/authors/add-author"
+            >
+              Add author
+            </Link>
+            <Link
+              onClick={() => setMobileToggler(false)}
+              className="navbar__user-link"
+              to="/books/add-book"
+            >
+              Add book
             </Link>
             <Link
               onClick={() => setMobileToggler(false)}

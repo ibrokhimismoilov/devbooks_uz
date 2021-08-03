@@ -1,19 +1,16 @@
-import React, { useState, useContext, useSelector } from "react";
-import { Link, Redirect } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useHistory } from "react-router-dom";
 import InputErrorMessages from "../../components/InputErrorMessages";
 import SignUpImg from "../../assets/images/register.svg";
 import apiClient from "../../services/apiClient";
-import { connect, useDispatch } from "react-redux";
-import { RegisterAuthAction } from "../../redux/auth/authAction";
+import { useDispatch } from "react-redux";
+import { updateUserAction } from "../../store/actions/userActions";
 
-function SignUp() {
-  // const { user, register } = props;
+export default function SignUp() {
 
   const dispatch = useDispatch();
-  // const user = useSelector(state => state.user);
+  const history = useHistory();
 
-
-  // const [register, setRegister] = useState(false);
   const [waitResAnimate, setWaitResAnimate] = useState(false);
 
   const [value, setValue] = useState({
@@ -33,65 +30,57 @@ function SignUp() {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    dispatch(RegisterAuthAction(value));
-    // register(value);
-
-    // setWaitResAnimate(true);
-    // for (let i = 0; i < e.target.length; i++) {
-    //   e.target[i].setAttribute("disabled", "disabled");
-    // }
-    // try {
-    //   const { data } = await apiClient.post("/sign-up", value);
-    //   if (data.success) {
-    //     // setRegister(true);
-    //     // setLoggedFunc(true);
-    //     setWaitResAnimate(false);
-    //     localStorage.setItem("token", data.token);
-    //     localStorage.setItem("user", JSON.stringify(data.user));
-    //     for (let i = 0; i < e.target.length; i++) {
-    //       e.target[i].removeAttribute("disabled");
-    //     }
-    //   } else {
-    //     const msg = handleErrorObject(data?.msg);
-    //     // setRegister(false);
-    //     setErrors(msg);
-    //     setWaitResAnimate(false);
-    //     for (let i = 0; i < e.target.length; i++) {
-    //       e.target[i].removeAttribute("disabled");
-    //     }
-    //   }
-    // } catch (err) {
-    //   console.log("Register error", err.response);
-    //   const msg = handleErrorObject(err.response?.data?.msg);
-    //   // setRegister(false);
-    //   setErrors(msg);
-    //   setWaitResAnimate(false);
-    //   for (let i = 0; i < e.target.length; i++) {
-    //     e.target[i].removeAttribute("disabled");
-    //   }
-    // }
+    
+    setWaitResAnimate(true);
+    for (let i = 0; i < e.target.length; i++) {
+      e.target[i].setAttribute("disabled", "disabled");
+    }
+    try {
+      const { data } = await apiClient.post("/sign-up", value);
+      if (data.success) {
+        setWaitResAnimate(false);
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
+        dispatch(updateUserAction({token: data.token, user: data.user}));
+        history.replace("/");
+        for (let i = 0; i < e.target.length; i++) {
+          e.target[i].removeAttribute("disabled");
+        }
+      } else {
+        const msg = handleErrorObject(data?.msg);
+        setErrors(msg);
+        setWaitResAnimate(false);
+        for (let i = 0; i < e.target.length; i++) {
+          e.target[i].removeAttribute("disabled");
+        }
+      }
+    } catch (err) {
+      console.log("Register error", err.response);
+      const msg = handleErrorObject(err.response?.data?.msg);
+      setErrors(msg);
+      setWaitResAnimate(false);
+      for (let i = 0; i < e.target.length; i++) {
+        e.target[i].removeAttribute("disabled");
+      }
+    }
   };
 
-  // const handleErrorObject = (errorMsg = "") => {
-  //   if (errorMsg.includes("E11000")) {
-  //     return {
-  //       type: "email",
-  //       message: "This user exist. Choose another email!",
-  //     };
-  //   }
-  //   const errorType = errorMsg.slice(
-  //     errorMsg.indexOf('"'),
-  //     errorMsg.lastIndexOf('"')
-  //   );
-  //   return {
-  //     type: errorType.replace('"', "").replace("\\", ""),
-  //     message: errorMsg,
-  //   };
-  // };
-
-  // if (register) {
-  //   return <Redirect to="/" />;
-  // }
+  const handleErrorObject = (errorMsg = "") => {
+    if (errorMsg.includes("E11000")) {
+      return {
+        type: "email",
+        message: "This user exist. Choose another email!",
+      };
+    }
+    const errorType = errorMsg.slice(
+      errorMsg.indexOf('"'),
+      errorMsg.lastIndexOf('"')
+    );
+    return {
+      type: errorType.replace('"', "").replace("\\", ""),
+      message: errorMsg,
+    };
+  };
 
   let waitAnimate = null;
   if (waitResAnimate) {
@@ -180,20 +169,3 @@ function SignUp() {
     </div>
   );
 }
-
-// const mapStateToProps = (state) => {
-//   return {
-//     user: state,
-//   };
-// };
-
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     register: (userState) => {
-//       dispatch(RegisterAuthAction(userState));
-//     },
-//   };
-// };
-
-// export default connect(mapStateToProps, mapDispatchToProps)(SignUp);
-export default SignUp;
