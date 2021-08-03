@@ -1,14 +1,13 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { Link, Redirect } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import SignInImg from "../../assets/images/login.svg";
 import apiClient from "../../services/apiClient";
 import { updateUserAction } from "../../store/actions/userActions";
 export default function SignIn() {
-  const [login, setLogin] = useState(false);
   const [waitResAnimate, setWaitResAnimate] = useState(false);
-
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const [value, setValue] = useState({
     email: "",
@@ -31,7 +30,7 @@ export default function SignIn() {
     try {
       const { data } = await apiClient.post("/login", value);
       if (data.success) {
-        setLogin(true);
+        history.replace("/");
         setloginError(null);
         setWaitResAnimate(false);
         localStorage.setItem("token", data.token);
@@ -40,7 +39,6 @@ export default function SignIn() {
       } else {
         console.log(data);
         const msg = data?.msg;
-        setLogin(false);
         setloginError(msg);
         setWaitResAnimate(false);
         for (let i = 0; i < e.target.length; i++) {
@@ -49,7 +47,6 @@ export default function SignIn() {
       }
     } catch (err) {
       console.log("login Error", err);
-      setLogin(false);
       const msg = err.response?.data?.msg || err.response?.data?.error;
       setloginError(msg);
       setWaitResAnimate(false);
@@ -58,10 +55,6 @@ export default function SignIn() {
       }
     }
   };
-
-  if (login) {
-    return <Redirect to="/" />;
-  }
 
   let waitAnimate = null;
   if (waitResAnimate) {
