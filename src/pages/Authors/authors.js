@@ -55,7 +55,7 @@ export default function Authors() {
                       {author.firstName} {author.lastName}
                     </h1>
                     <p className="year">
-                      {author.date_of_birth} - {author.date_of_death}
+                      {new Date(new Date(author.date_of_birth).getTime()).toISOString()} - {new Date(author.date_of_death).toISOString()}
                     </p>
                     <p className="books">
                       <RiBookFill /> {author.books} - <RiVolumeUpFill />{" "}

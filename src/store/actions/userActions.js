@@ -1,14 +1,22 @@
-import * as actionTypes from '../actionTypes';
+import { UPDATE_USER } from "../actionTypes";
 
-export const updateUserAction = ({ user, token }) => {
-  return {
+const initialState = {
+  token: null,
+  user: {},
+};
+
+export const updateUserAction = ({
+  user = initialState.user,
+  token = initialState.token,
+}) => {
+    return {
     payload: { user, token },
-    type: actionTypes.UPDATE_USER,
-  }
-}
+    type: UPDATE_USER,
+  };
+};
 
 export const clearUserAction = () => {
   return {
-    type: actionTypes.CLEAR_USER,
-  }
-}
+    type: UPDATE_USER,
+  };
+};

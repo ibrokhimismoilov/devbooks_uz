@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { Route, Switch } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Redirect, Route, Switch } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 // assets
 import "./assets/scss/App.scss";
@@ -15,44 +16,39 @@ import Home from "./pages/Home";
 import AuthorSingle from "./pages/AuthorSingle";
 import BookSingle from "./pages/BookSingle";
 import UserPage from "./pages/UserPage";
-
-// Contexts
-import AuthContext from "./context/AuthContext";
 import UserSettings from "./pages/UserSettings";
 
-const initialState = {
-  token: null,
-  isLoggedIn: false,
-  user: {},
-};
+// AUTH REDUX
+import { clearUserAction, updateUserAction } from "./store/actions/userActions";
+import { UPDATE_USER } from "./store/actionTypes";
+import apiClient from "./services/apiClient";
 
 export default function App() {
-  const [authDetails, setAuthDetails] = useState(initialState);
-
-  const logoutHandler = () => {
-    localStorage.removeItem("token");
-    setAuthDetails(initialState);
-  };
+  const dispatch = useDispatch();
+  let token = localStorage.token;
 
   useEffect(() => {
-    const token = localStorage.token;
-    const user = JSON.stringify(localStorage.getItem("user") || "{}");
-    if (token) {
-      setAuthDetails((state) => ({
-        ...state,
-        isLoggedIn: true,
-        token,
-        user: user || {},
-      }));
-    }
-  }, []);
 
-  const { user, token } = authDetails;
+    
+    const getUserFunc = async () => {
+      const {data} = await apiClient.get("/users");
+      console.log("local data", data);
+      if (token) {
+        dispatch(updateUserAction({user: data.user, token}));
+      } 
+      else {
+        dispatch(clearUserAction());
+      }
+    }
+
+    getUserFunc()
+
+  }, []);
 
   if (token) {
     return (
-      <AuthContext.Provider value={{ setAuthDetails }}>
-        <Navbar logout={logoutHandler} />
+      <>
+        <Navbar />
         <Switch>
           <Route exact path="/" component={Home} />
           <Route exact path="/books" component={Books} />
@@ -63,17 +59,17 @@ export default function App() {
           <Route exact path="/user" component={UserPage} />
           <Route component={NotFound} />
         </Switch>
-      </AuthContext.Provider>
+      </>
     );
   }
 
   return (
-    <AuthContext.Provider value={{ setAuthDetails }}>
+    <>
       <Switch>
-        <Route component={SignIn} exact path="/sign-in" />
-        <Route component={SignUp} exact path="/sign-up" />
+        <Route exact path="/sign-in" component={SignIn} />
+        <Route exact path="/sign-up" component={SignUp} />
         <Route component={SignIn} />
       </Switch>
-    </AuthContext.Provider>
+    </>
   );
 }

@@ -3,15 +3,21 @@ import { Link, NavLink } from "react-router-dom";
 import { NavbarSection } from "./navbarStyled";
 import userImg from "../../assets/images/avatar.svg";
 import { BsChevronDown } from "react-icons/bs";
+import { useSelector, useDispatch } from "react-redux";
+import { clearUserAction } from "../../store/actions/userActions";
 
-export default function Navbar({ logout, }) {
+export default function Navbar() {
   const [mobileToggler, setMobileToggler] = useState(false);
-  const {firstName} = JSON.parse(localStorage.getItem("user"));
+  const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+
+  console.log(user);
 
   const logoutHandler = () => {
-    setMobileToggler(false); 
-    logout();
-  }
+    setMobileToggler(false);
+    localStorage.clear();
+    dispatch(clearUserAction());
+  };
 
   return (
     <NavbarSection className="navbar">
@@ -62,7 +68,7 @@ export default function Navbar({ logout, }) {
               className="navbar__user-link"
               to="/user"
             >
-              {firstName}
+              {user?.user?.firstName}
             </Link>
             <Link
               onClick={() => setMobileToggler(false)}
@@ -71,17 +77,14 @@ export default function Navbar({ logout, }) {
             >
               Settings
             </Link>
-            <span
-              className="navbar__user-link"
-              onClick={logoutHandler}
-            >
+            <span className="navbar__user-link" onClick={logoutHandler}>
               Log out
             </span>
           </div>
         </div>
         <div
           onClick={() => setMobileToggler((state) => !state)}
-          className={`navbar__toggle ${mobileToggler  ? "open" : ""}`}
+          className={`navbar__toggle ${mobileToggler ? "open" : ""}`}
         >
           <span className="navbar__toggle-icon"></span>
         </div>

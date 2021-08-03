@@ -1,16 +1,14 @@
 import React, { useState, useContext } from "react";
+import { useDispatch } from "react-redux";
 import { Link, Redirect } from "react-router-dom";
 import SignInImg from "../../assets/images/login.svg";
 import apiClient from "../../services/apiClient";
-import AuthContext from "../../context/AuthContext";
-
+import { updateUserAction } from "../../store/actions/userActions";
 export default function SignIn() {
   const [login, setLogin] = useState(false);
   const [waitResAnimate, setWaitResAnimate] = useState(false);
-  const context = useContext(AuthContext);
 
-  // const dispatch = useDispatch();
-  // const user = useSelector(state => state.user);
+  const dispatch = useDispatch();
 
   const [value, setValue] = useState({
     email: "",
@@ -23,9 +21,6 @@ export default function SignIn() {
     const { value, name } = e.target;
     setValue((prevState) => ({ ...prevState, [name]: value }));
   };
-
-  // let aa = context.user;
-  // console.log(aa?.token);
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -41,8 +36,7 @@ export default function SignIn() {
         setWaitResAnimate(false);
         localStorage.setItem("token", data.token);
         localStorage.setItem("user", JSON.stringify(data.user));
-        context.setAuthDetails(data.user);
-        // dispatch(updateUserAction({ user: data.user, token: data.token }));
+        dispatch(updateUserAction({ user: data.user, token: data.token }));
       } else {
         console.log(data);
         const msg = data?.msg;
