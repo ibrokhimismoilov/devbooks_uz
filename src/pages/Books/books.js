@@ -69,30 +69,9 @@ export default function Books() {
                       {book.author.firstName} {book.author.lastName}
                     </p>
                     <p className="books">
-                      {/* <FaStar />  */}
                       price: ${book.price}&nbsp; ko'rilgan: {book.views}&nbsp;
                       sahifa: {book.pages}
                     </p>
-                    {/* <ul>
-                    <li>Author Fullname: <i></i></li>
-                    <li>Author year: <i>{book.author.date_of_birth}-{book.author.date_of_death}</i></li>
-                    <li>Category: <i>{book.category}</i></li>
-                    <li>Country: <i>{book.country}</i></li>
-                    <li>Language: <i>{book.language}</i></li>
-                    <li> <b></b></li>
-                    <li> <b></b></li>
-                    <li> <b></b></li>
-                  </ul>
-                  <p> </p>
-                  <p>: </p>
-                  <p> </p>
-                  <p> </p>
-                  <p>pages: {book.pages}</p>
-                  <p>price: {book.price}</p>
-                  <p>updatedAt: {book.updatedAt}</p>
-                  <p>views: {book.}</p>
-                  <p>year: {book.year}</p>
-                  <p>id: {book._id}</p> */}
                   </div>
                 </Link>
               );

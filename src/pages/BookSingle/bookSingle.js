@@ -6,7 +6,6 @@ import LoaderGrid from "../../components/Loader/LoaderGrid";
 
 export default function BookSingle({ books }) {
   const [book, setBook] = useState(false);
-  console.log("bookSingle", books);
 
   const params = useParams();
 
@@ -27,7 +26,7 @@ export default function BookSingle({ books }) {
     didMount();
   }, []);
 
-  console.log(book);
+  console.log("Single book => ", book);
 
   return (
     <div className="book-single">
@@ -64,52 +63,54 @@ export default function BookSingle({ books }) {
               Book author id: <i>{book.author._id}</i>
             </p>
             <p>
-              Book author date_of_birth: <i>{book.author.date_of_birth}</i>
+              Book author date_of_birth:{" "}
+              <i>{new Date(book.author.date_of_birth).toLocaleDateString()}</i>
             </p>
             <p>
-              Book author date_of_death: <i>{book.author.date_of_death}</i>
+              Book author date_of_death:{" "}
+              <i>{new Date(book.author.date_of_death).toLocaleDateString()}</i>
             </p>
             <p>
               Book author __v: <i>{book.author.__v}</i>
             </p>
             <p>
-              Book isPublished: <i>{book.isPublished}</i>{" "}
+              Book isPublished: <i>{book.isPublished}</i>
             </p>
             <p>
-              Book language: <i>{book.language}</i>{" "}
+              Book language: <i>{book.language}</i>
             </p>
             <p>
-              Book link: <i>{book.link}</i>{" "}
+              Book link: <i>{book.link}</i>
             </p>
             <p>
-              Book pages: <i>{book.pages}</i>{" "}
+              Book pages: <i>{book.pages}</i>
             </p>
             <p>
-              Book price: <i>{book.price}</i>{" "}
+              Book price: <i>{book.price}</i>
             </p>
             <p>
-              Book rate: <i>{book.rate}</i>{" "}
+              Book rate: <i>{book.rate}</i>
             </p>
             <p>
-              Book updatedAt: <i>{book.updatedAt}</i>{" "}
+              Book updatedAt:{" "}
+              <i>{new Date(book.updatedAt).toLocaleDateString()}</i>
             </p>
             <p>
-              Book views: <i>{book.views}</i>{" "}
+              Book views: <i>{book.views}</i>
             </p>
             <p>
-              Book year: <i>{book.year}</i>{" "}
+              Book year: <i>{book.year}</i>
             </p>
             <p>
-              Book year: <i>{book.year}</i>{" "}
+              Book id: <i>{book._id}</i>
             </p>
             <p>
-              Book id: <i>{book._id}</i>{" "}
-            </p>
-            <p>
-              Book __v: <i>{book.__v}</i>{" "}
+              Book __v: <i>{book.__v}</i>
             </p>
           </>
-        ): <LoaderGrid />}
+        ) : (
+          <LoaderGrid />
+        )}
       </div>
     </div>
   );

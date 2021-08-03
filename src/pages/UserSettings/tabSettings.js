@@ -1,27 +1,29 @@
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { updateUserLanguage } from "../../store/actions/userActions";
 
 export default function TabSettings() {
-  const [settings, setSettings] = useState({
-    language: "Uzbek",
-    theme: true,
-  });
+  const { lang } = useSelector((state) => state.user.user);
+  const [language, setLanguage] = useState(lang);
+  const [theme, setTheme] = useState("dark");
+  const dispatch = useDispatch();
 
-  const inputHandler = (e) => {
-    const { name, value } = e.target;
-
-    if (name === "theme") {
-      const { checked } = e.target;
-      setSettings((state) => ({ ...state, [name]: checked }));
-    } else {
-      setSettings((state) => ({ ...state, [name]: value }));
-    }
+  const themeHandler = (e) => {
+    e.target.checked ? setTheme("dark") : setTheme("light");
   };
 
-  const onSubmit = e => {
-    e.preventDefault();
-  }
+  const languageHandler = (e) => {
+    setLanguage(e.target.value);
+  };
 
-  console.log(settings);
+  const onSubmit = (e) => {
+    e.preventDefault();
+    console.log("Language saved to redux store");
+    dispatch(updateUserLanguage(language));
+  };
+
+  console.log("theme =>", theme);
+  console.log("language =>", language);
 
   return (
     <form className="user-settings__tab-item" onSubmit={onSubmit}>
@@ -34,13 +36,13 @@ export default function TabSettings() {
             <label>Language</label>
             <select
               className="input-control"
-              onChange={inputHandler}
+              onChange={languageHandler}
               name="language"
-              value={settings.language}
+              value={language}
             >
-              <option value="English">English</option>
-              <option value="Russian">Russian</option>
-              <option value="Uzbek">Uzbek</option>
+              <option value="en">English</option>
+              <option value="ru">Russian</option>
+              <option value="uz">Uzbek</option>
             </select>
           </div>
           <div className="user-settings__inputbox">
@@ -49,8 +51,8 @@ export default function TabSettings() {
               id="switch-theme"
               className="switch-control"
               type="checkbox"
-              name="theme"
-              onChange={inputHandler}
+              checked={theme === "dark" ? true : false}
+              onChange={themeHandler}
               hidden
             />
             <label htmlFor="switch-theme" className="switch-theme">

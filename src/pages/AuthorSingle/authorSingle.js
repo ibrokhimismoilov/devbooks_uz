@@ -5,8 +5,6 @@ import apiClient from "../../services/apiClient";
 
 export default function AuthorSingle({ authors }) {
   const [author, setAuthor] = useState(false);
-  console.log("authorSingle", authors);
-
   const params = useParams();
 
   const didMount = async (e) => {
@@ -27,7 +25,7 @@ export default function AuthorSingle({ authors }) {
     didMount();
   }, []);
 
-  console.log(author);
+  console.log("Single author => ", author);
 
   return (
     <div className="book-single">
@@ -38,8 +36,8 @@ export default function AuthorSingle({ authors }) {
             <p>Author firstName: {author.firstName}</p>
             <p>Author lastName: {author.lastName}</p>
             <p>Author id: {author._id}</p>
-            <p>Author date_of_birth: {author.date_of_birth}</p>
-            <p>Author date_of_death: {author.date_of_death}</p>
+            <p>Author date_of_birth: {new Date(author.date_of_birth).toLocaleDateString()}</p>
+            <p>Author date_of_death: {new Date(author.date_of_death).toLocaleDateString()}</p>
             <p>Author __v: {author.__v}</p>
           </>
         ) : <LoaderGrid />}

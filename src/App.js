@@ -22,12 +22,14 @@ import UserSettings from "./pages/UserSettings";
 
 // AUTH REDUX
 import { clearUserAction, updateUserAction } from "./store/actions/userActions";
-// import apiClient from "./services/apiClient";
 
 export default function App() {
   const dispatch = useDispatch();
   const { user, token } = useSelector((state) => state.user);
+  const store = useSelector((state) => state);
 
+  
+  
   useEffect(() => {
     if (token) {
       dispatch(updateUserAction({ user, token }));
@@ -35,6 +37,8 @@ export default function App() {
       dispatch(clearUserAction());
     }
   }, []);
+  
+  console.log("REDUX STORE:", store);
 
   if (token) {
     return (
@@ -42,12 +46,12 @@ export default function App() {
         <Navbar />
         <Switch>
           <Route exact path="/" component={Home} />
+          <Route exact path="/authors/add-author" component={AddAuthor} />
+          <Route exact path={"/authors"} component={Authors} />
+          <Route exact path="/authors/:id" component={AuthorSingle} />
           <Route exact path="/books/add-book" component={AddBook} />
           <Route exact path="/books" component={Books} />
           <Route exact path="/books/:id" component={BookSingle} />
-          <Route exact path="/authors/add-author" component={AddAuthor} />
-          <Route exact path="/authors" component={Authors} />
-          <Route exact path="/authors/:id" component={AuthorSingle} />
           <Route exact path="/user-settings" component={UserSettings} />
           <Route exact path="/user" component={UserPage} />
           <Route component={NotFound} />
@@ -59,7 +63,6 @@ export default function App() {
   return (
     <>
       <Switch>
-        <Route exact path="/sign-in" component={SignIn} />
         <Route exact path="/sign-up" component={SignUp} />
         <Route component={SignIn} />
       </Switch>
