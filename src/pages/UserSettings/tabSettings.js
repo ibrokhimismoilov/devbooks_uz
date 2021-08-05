@@ -1,16 +1,12 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { updateUserLanguage } from "../../store/actions/userActions";
+import { updateLanguage, updateTheme } from "../../store/actions/userActions";
 
 export default function TabSettings() {
   const { lang } = useSelector((state) => state.user.user);
   const [language, setLanguage] = useState(lang);
-  const [theme, setTheme] = useState("dark");
+  const [theme, setTheme] = useState("light");
   const dispatch = useDispatch();
-
-  const themeHandler = (e) => {
-    e.target.checked ? setTheme("dark") : setTheme("light");
-  };
 
   const languageHandler = (e) => {
     setLanguage(e.target.value);
@@ -19,7 +15,8 @@ export default function TabSettings() {
   const onSubmit = (e) => {
     e.preventDefault();
     console.log("Language saved to redux store");
-    dispatch(updateUserLanguage(language));
+    dispatch(updateLanguage(language));
+    dispatch(updateTheme(theme));
   };
 
   console.log("theme =>", theme);
@@ -48,12 +45,14 @@ export default function TabSettings() {
           <div className="user-settings__inputbox">
             <label>Theme</label>
             <input
+              hidden
               id="switch-theme"
               className="switch-control"
               type="checkbox"
               checked={theme === "dark" ? true : false}
-              onChange={themeHandler}
-              hidden
+              onChange={(e) =>
+                e.target.checked ? setTheme("dark") : setTheme("light")
+              }
             />
             <label htmlFor="switch-theme" className="switch-theme">
               <span className="switch-theme__inner"></span>

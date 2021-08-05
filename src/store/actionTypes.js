@@ -1,3 +1,5 @@
+export const RESPONSE_ERROR = "RESPONSE_ERROR";
 export const UPDATE_USER = "UPDATE_USER";
 export const CLEAR_USER = "CLEAR_USER";
 export const UPDATE_LANGUAGE = "UPDATE_LANGUAGE";
+export const UPDATE_THEME = "UPDATE_THEME";

@@ -1,4 +1,18 @@
-import { UPDATE_LANGUAGE, UPDATE_USER } from "../actionTypes";
+import {
+  CLEAR_USER,
+  RESPONSE_ERROR,
+  UPDATE_LANGUAGE,
+  UPDATE_THEME,
+  UPDATE_USER,
+} from "../actionTypes";
+
+export const responseErrorAction = (err) => {
+  return {
+    payload: err,
+    type: RESPONSE_ERROR,
+  };
+};
+
 
 export const updateUserAction = ({ user, token }) => {
   return {
@@ -9,13 +23,20 @@ export const updateUserAction = ({ user, token }) => {
 
 export const clearUserAction = () => {
   return {
-    type: UPDATE_USER,
+    type: CLEAR_USER,
   };
 };
 
-export const updateUserLanguage = (lang) => {
+export const updateLanguage = (lang) => {
   return {
     payload: lang,
     type: UPDATE_LANGUAGE,
+  };
+};
+
+export const updateTheme = (theme) => {
+  return {
+    type: UPDATE_THEME,
+    payload: theme,
   };
 };

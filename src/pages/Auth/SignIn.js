@@ -29,25 +29,23 @@ export default function SignIn() {
     }
     try {
       const { data } = await apiClient.post("/login", value);
+      setWaitResAnimate(false);
       if (data.success) {
         history.replace("/");
+        console.log(data);
         setloginError(null);
-        setWaitResAnimate(false);
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("user", JSON.stringify(data.user));
         dispatch(updateUserAction({ user: data.user, token: data.token }));
       } else {
-        console.log(data);
-        const msg = data?.msg;
+        const msg = data?.error;
         setloginError(msg);
-        setWaitResAnimate(false);
-        for (let i = 0; i < e.target.length; i++) {
-          e.target[i].removeAttribute("disabled");
-        }
+        console.log("SIGN-IN => SUCCESS.ERROR", msg);
+      }
+      for (let i = 0; i < e.target.length; i++) {
+        e.target[i].removeAttribute("disabled");
       }
     } catch (err) {
-      console.log("login Error", err);
       const msg = err.response?.data?.msg || err.response?.data?.error;
+      console.log("SIGN-IN => catch(err)", msg);
       setloginError(msg);
       setWaitResAnimate(false);
       for (let i = 0; i < e.target.length; i++) {

@@ -5,6 +5,7 @@ import SignUpImg from "../../assets/images/register.svg";
 import apiClient from "../../services/apiClient";
 import { useDispatch } from "react-redux";
 import { updateUserAction } from "../../store/actions/userActions";
+import { handleErrorObject } from "../../utils/handleErrorObject";
 
 export default function SignUp() {
 
@@ -39,8 +40,6 @@ export default function SignUp() {
       const { data } = await apiClient.post("/sign-up", value);
       if (data.success) {
         setWaitResAnimate(false);
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("user", JSON.stringify(data.user));
         dispatch(updateUserAction({token: data.token, user: data.user}));
         history.replace("/");
         for (let i = 0; i < e.target.length; i++) {
@@ -65,22 +64,7 @@ export default function SignUp() {
     }
   };
 
-  const handleErrorObject = (errorMsg = "") => {
-    if (errorMsg.includes("E11000")) {
-      return {
-        type: "email",
-        message: "This user exist. Choose another email!",
-      };
-    }
-    const errorType = errorMsg.slice(
-      errorMsg.indexOf('"'),
-      errorMsg.lastIndexOf('"')
-    );
-    return {
-      type: errorType.replace('"', "").replace("\\", ""),
-      message: errorMsg,
-    };
-  };
+
 
   let waitAnimate = null;
   if (waitResAnimate) {

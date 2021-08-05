@@ -1,8 +1,9 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import Authors from "../Authors";
 
 export default function Home() {
-  const user = JSON.parse(localStorage.getItem("user"));
+  const {user} = useSelector(state => state.user);  
 
   return (
     <div>

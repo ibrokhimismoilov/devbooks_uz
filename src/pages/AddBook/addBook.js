@@ -1,15 +1,15 @@
-import React, { useState } from "react";
-// import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import apiClient from "../../services/apiClient";
 import defaultImg from "../../assets/images/books/defaultAddBook.svg";
 
 export default function AddBook() {
+  const [authors, setAuthors] = useState([]);
   const [waitResAnimate, setWaitResAnimate] = useState(false);
   const [uploadError, setUploadError] = useState(null);
 
   const [value, setValue] = useState({
     title: "" /* required */,
-    author: "" /* required */,
+    author: authors || [] /* required */,
     description: "",
     country: "",
     imageLink: "",
@@ -17,16 +17,34 @@ export default function AddBook() {
     link: "",
     pages: "",
     year: "",
-    rate: "",
+    rate: 0,
     price: "",
-    category: "" /* classic | biography | science */,
+    category: "classic" /* classic | biography | science */,
     isPublished: true,
   });
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const { data } = await apiClient("/authors");
+        console.log(data);
+        if (data.success) {
+          setAuthors(data.payload);
+        } else {
+          console.log("Authors get response data.success=false: ", data);
+        }
+      } catch (err) {
+        console.log("Authors get request noworking err: ", err);
+      }
+    })();
+  }, []);
 
   const inputHandler = (e) => {
     const { value, name } = e.target;
     setValue((prevState) => ({ ...prevState, [name]: value }));
   };
+
+  console.log(value);
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -36,21 +54,23 @@ export default function AddBook() {
     }
     try {
       const { data } = await apiClient.post("/books", value);
+      setWaitResAnimate(false);
       if (data.success) {
-        setUploadError(null);
-        setWaitResAnimate(false);
+        // console.log("data success 200", data);
+        
+
       } else {
-        console.log(data);
+        // console.log("success=false: err =>", data);
         const msg = data?.msg;
         setUploadError(msg);
-        setWaitResAnimate(false);
-        for (let i = 0; i < e.target.length; i++) {
-          e.target[i].removeAttribute("disabled");
-        }
+      }
+      for (let i = 0; i < e.target.length; i++) {
+        e.target[i].removeAttribute("disabled");
       }
     } catch (err) {
-      console.log("login Error", err);
-      const msg = err.response?.data?.msg || err.response?.data?.error;
+      // console.log("catch err =>",  err.response.data);
+      const msg = err.response?.data || err.response?.data?.error;
+      // console.log("login Error", msg);
       setUploadError(msg);
       setWaitResAnimate(false);
       for (let i = 0; i < e.target.length; i++) {
@@ -71,11 +91,13 @@ export default function AddBook() {
   return (
     <form className="add" onSubmit={submitHandler}>
       <div className="add__img">
-          <div className="add__img-inner">
-            <img src={defaultImg} alt="default" />
-            <input type="file" id="upload-book-img" hidden />
-            <label htmlFor="upload-book-img" className="add__form-btn">Upload cover</label>
-          </div>
+        <div className="add__img-inner">
+          <img src={defaultImg} alt="default" />
+          <label className="add__form-btn">
+            <input type="file" hidden />
+            Upload cover
+          </label>
+        </div>
       </div>
       <div className="add__form">
         <div className="add__form-inner">
@@ -91,10 +113,20 @@ export default function AddBook() {
             />
           </div>
           <div className="add__form-inputbox">
-            <select name="author" value={value.author} required>
-              <option>Abror</option>
-              <option>Eshmatjon</option>
-              <option>Xoshimjon</option>
+            <select
+              name="author"
+              value={value.author}
+              onChange={inputHandler}
+              required
+            >
+              {authors.map((item) => {
+                const { _id, firstName, lastName } = item;
+                return (
+                  <option value={_id} key={_id}>
+                    {`${firstName} ${lastName}`}
+                  </option>
+                );
+              })}
             </select>
           </div>
           <div className="add__form-inputbox">
@@ -126,7 +158,7 @@ export default function AddBook() {
               onChange={inputHandler}
               //   required
             />
-          </div>      
+          </div>
           <div className="add__form-inputbox">
             <input
               type="text"
