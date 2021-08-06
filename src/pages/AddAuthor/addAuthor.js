@@ -2,25 +2,31 @@ import React, { useState } from "react";
 // import { Link } from "react-router-dom";
 import apiClient from "../../services/apiClient";
 import defaultImg from "../../assets/images/authors/defaultAddAuthor.svg";
+import Swal from "sweetalert2";
+import { useHistory } from "react-router-dom";
+
+const initialState = {
+  firstName: "" /* required */,
+  lastName: "" /* required */,
+  date_of_birth: null,
+  date_of_death: null,
+  // country: "",
+  // bio: "",
+};
 
 export default function AddBook() {
+  const history = useHistory();
   const [waitResAnimate, setWaitResAnimate] = useState(false);
   const [uploadError, setUploadError] = useState(null);
-
-  const [value, setValue] = useState({
-    firstName: "" /* required */,
-    lastName: "" /* required */,
-    date_of_birth: "",
-    date_of_death: "",
-    createdAt: "",
-    updatedAt: "",
-    country: "",
-    bio: "",
-  });
+  const [isDead, setIsDead] = useState(false);
+  const [value, setValue] = useState(initialState);
 
   const inputHandler = (e) => {
     const { value, name } = e.target;
-    setValue((prevState) => ({ ...prevState, [name]: value }));
+    setValue((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
   };
 
   const submitHandler = async (e) => {
@@ -30,24 +36,58 @@ export default function AddBook() {
       e.target[i].setAttribute("disabled", "disabled");
     }
     try {
-      const { data } = await apiClient.post("/books", value);
+      const requsetData = value.date_of_death
+        ? value
+        : {
+            firstName: value.firstName,
+            lastName: value.lastName,
+            date_of_birth: value.date_of_birth,
+          };
+
+      const { data } = await apiClient.post("/authors", requsetData);
+      setWaitResAnimate(false);
+
       if (data.success) {
         setUploadError(null);
-        setWaitResAnimate(false);
+
+        Swal.fire({
+          title: "Success",
+          text: "Author has been added successfully",
+          icon: "success",
+          showCancelButton: true,
+          cancelButtonText: "Finished added",
+          confirmButtonText: "Add mores",
+        }).then(({ value }) => {
+          if (!value) {
+            history.replace("/authors");
+          }
+          setValue(initialState);
+        });
       } else {
-        console.log(data);
-        const msg = data?.msg;
+        console.log(
+          "addAuthor data success false: ",
+          data?.details[0]?.message
+        );
+        const msg = data?.details[0]?.message;
         setUploadError(msg);
-        setWaitResAnimate(false);
-        for (let i = 0; i < e.target.length; i++) {
-          e.target[i].removeAttribute("disabled");
-        }
+      }
+
+      for (let i = 0; i < e.target.length; i++) {
+        e.target[i].removeAttribute("disabled");
       }
     } catch (err) {
-      console.log("login Error", err);
+      console.log("AddAuhtor catch(err): ", err);
       const msg = err.response?.data?.msg || err.response?.data?.error;
+
       setUploadError(msg);
       setWaitResAnimate(false);
+
+      Swal.fire({
+        title: "Error",
+        text: msg,
+        icon: "error",
+      });
+
       for (let i = 0; i < e.target.length; i++) {
         e.target[i].removeAttribute("disabled");
       }
@@ -66,11 +106,13 @@ export default function AddBook() {
   return (
     <form className="add" onSubmit={submitHandler}>
       <div className="add__img">
-          <div className="add__img-inner">
-            <img src={defaultImg} alt="default" />
-            <input type="file" id="upload-book-img" hidden />
-            <label htmlFor="upload-book-img" className="add__form-btn">Upload cover</label>
-          </div>
+        <div className="add__img-inner">
+          <img src={defaultImg} alt="default" />
+          <input type="file" id="upload-book-img" hidden />
+          <label htmlFor="upload-book-img" className="add__form-btn">
+            Upload cover
+          </label>
+        </div>
       </div>
       <div className="add__form">
         <div className="add__form-inner">
@@ -92,7 +134,7 @@ export default function AddBook() {
               name="lastName"
               value={value.lastName}
               onChange={inputHandler}
-                required
+              required
             />
           </div>
           <div className="add__form-inputbox">
@@ -105,17 +147,27 @@ export default function AddBook() {
               //   required
             />
           </div>
-          <div className="add__form-inputbox">
+          <label className="add__form-desc">
             <input
-              type="date"
-              placeholder="date of death"
-              name="date_of_death"
-              value={value.date_of_death}
-              onChange={inputHandler}
-              //   required
-            />
-          </div>      
-          <div className="add__form-inputbox">
+              type="checkbox"
+              name="isDead"
+              onChange={() => setIsDead((state) => !state)}
+            />{" "}
+            Is the author dead?
+          </label>
+          {isDead && (
+            <div className="add__form-inputbox">
+              <input
+                type="date"
+                placeholder="date of death"
+                name="date_of_death"
+                value={value.date_of_death}
+                onChange={inputHandler}
+                //   required
+              />
+            </div>
+          )}
+          {/* <div className="add__form-inputbox">
             <input
               type="text"
               placeholder="country"
@@ -124,8 +176,8 @@ export default function AddBook() {
               onChange={inputHandler}
               //   required
             />
-          </div>
-          <div className="add__form-inputbox add__form-inputbox--textarea">
+          </div> */}
+          {/* <div className="add__form-inputbox add__form-inputbox--textarea">
             <textarea
               type="text"
               placeholder="bio"
@@ -134,7 +186,7 @@ export default function AddBook() {
               onChange={inputHandler}
               // required
             />
-          </div>
+          </div> */}
 
           {waitAnimate}
           {uploadError && <span className="error-msg">{uploadError}</span>}

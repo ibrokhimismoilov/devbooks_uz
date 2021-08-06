@@ -11,7 +11,7 @@ const apiClient = axios.create({
 apiClient.interceptors.request.use(
   (configs) => {
     const token =
-      store.getState().user.token || localStorage.getItem("token") || "";
+      store.getState().user.token || "";
     configs.headers.Authorization = token ? `Berear ${token}` : "";
     configs.headers.language = "uz";
     return configs;
@@ -27,6 +27,7 @@ apiClient.interceptors.response.use(
   },
   (err) => {
     console.log("SERVICES RESPONSE ERROR", err.response);
+
     if (err.response.status === 401) {
       store.dispatch(clearUserAction());
     }

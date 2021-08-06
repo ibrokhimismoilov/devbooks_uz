@@ -4,6 +4,7 @@ import { Link, useHistory } from "react-router-dom";
 import SignInImg from "../../assets/images/login.svg";
 import apiClient from "../../services/apiClient";
 import { updateUserAction } from "../../store/actions/userActions";
+
 export default function SignIn() {
   const [waitResAnimate, setWaitResAnimate] = useState(false);
   const dispatch = useDispatch();
@@ -31,7 +32,7 @@ export default function SignIn() {
       const { data } = await apiClient.post("/login", value);
       setWaitResAnimate(false);
       if (data.success) {
-        history.replace("/");
+        history.push("/");
         console.log(data);
         setloginError(null);
         dispatch(updateUserAction({ user: data.user, token: data.token }));

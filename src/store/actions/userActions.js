@@ -1,17 +1,9 @@
 import {
   CLEAR_USER,
-  RESPONSE_ERROR,
   UPDATE_LANGUAGE,
   UPDATE_THEME,
   UPDATE_USER,
 } from "../actionTypes";
-
-export const responseErrorAction = (err) => {
-  return {
-    payload: err,
-    type: RESPONSE_ERROR,
-  };
-};
 
 
 export const updateUserAction = ({ user, token }) => {

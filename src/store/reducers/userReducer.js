@@ -1,6 +1,5 @@
 import {
   CLEAR_USER,
-  RESPONSE_ERROR,
   UPDATE_LANGUAGE,
   UPDATE_THEME,
   UPDATE_USER,
@@ -12,16 +11,11 @@ const initialState = {
   user: {
     lang: "uz",
   },
-  err: "",
 };
 
 const userReducer = (state = initialState, action) => {
   const { user, token } = { ...action?.payload };
   switch (action.type) {
-    case RESPONSE_ERROR: {
-      return { ...state, err: action.payload };
-    }
-
     case UPDATE_USER: {
       return { ...state, user, token };
     }

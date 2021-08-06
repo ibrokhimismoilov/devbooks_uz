@@ -36,22 +36,19 @@ export default function SignUp() {
     for (let i = 0; i < e.target.length; i++) {
       e.target[i].setAttribute("disabled", "disabled");
     }
+
     try {
       const { data } = await apiClient.post("/sign-up", value);
+      setWaitResAnimate(false);
       if (data.success) {
-        setWaitResAnimate(false);
         dispatch(updateUserAction({token: data.token, user: data.user}));
         history.replace("/");
-        for (let i = 0; i < e.target.length; i++) {
-          e.target[i].removeAttribute("disabled");
-        }
       } else {
         const msg = handleErrorObject(data?.msg);
         setErrors(msg);
-        setWaitResAnimate(false);
-        for (let i = 0; i < e.target.length; i++) {
-          e.target[i].removeAttribute("disabled");
-        }
+      }
+      for (let i = 0; i < e.target.length; i++) {
+        e.target[i].removeAttribute("disabled");
       }
     } catch (err) {
       console.log("Register error", err.response);
@@ -89,7 +86,6 @@ export default function SignUp() {
               Sign in
             </Link>
           </p>
-          <InputErrorMessages type="firstName" errorObj={errors} />
           <div className="auth__form-inputbox">
             <input
               type="firstName"
@@ -100,7 +96,7 @@ export default function SignUp() {
               // required
             />
           </div>
-          <InputErrorMessages type="lastName" errorObj={errors} />
+          <InputErrorMessages type="firstName" errorObj={errors} />
           <div className="auth__form-inputbox">
             <input
               type="lastName"
@@ -111,7 +107,7 @@ export default function SignUp() {
               // required
             />
           </div>
-          <InputErrorMessages type="phone" errorObj={errors} />
+          <InputErrorMessages type="lastName" errorObj={errors} />
           <div className="auth__form-inputbox">
             <input
               type="phone"
@@ -122,7 +118,7 @@ export default function SignUp() {
               // required
             />
           </div>
-          <InputErrorMessages type="email" errorObj={errors} />
+          <InputErrorMessages type="phone" errorObj={errors} />
 
           <div className="auth__form-inputbox">
             <input
@@ -133,8 +129,8 @@ export default function SignUp() {
               onChange={inputHandler}
               // required
             />
+          <InputErrorMessages type="email" errorObj={errors} />
           </div>
-          <InputErrorMessages type="password" errorObj={errors} />
           <div className="auth__form-inputbox">
             <input
               type="password"
@@ -145,6 +141,7 @@ export default function SignUp() {
               // required
             />
           </div>
+          <InputErrorMessages type="password" errorObj={errors} />
           {waitAnimate}
 
           <button className="auth__form-btn">Next step</button>

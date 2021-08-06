@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Route, Switch } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 // assets
 import "./assets/scss/App.scss";
@@ -21,22 +21,12 @@ import UserPage from "./pages/UserPage";
 import UserSettings from "./pages/UserSettings";
 
 // AUTH REDUX
-import { clearUserAction, updateUserAction } from "./store/actions/userActions";
+// import { clearUserAction, updateUserAction } from "./store/actions/userActions";
+import MyBooks from "./pages/MyBooks";
 
 export default function App() {
-  const dispatch = useDispatch();
-  const { user, token } = useSelector((state) => state.user);
+  const { token } = useSelector((state) => state.user);
   const store = useSelector((state) => state);
-
-  
-  
-  useEffect(() => {
-    if (token) {
-      dispatch(updateUserAction({ user, token }));
-    } else {
-      dispatch(clearUserAction());
-    }
-  }, []);
   
   console.log("REDUX STORE:", store);
 
@@ -46,11 +36,12 @@ export default function App() {
         <Navbar />
         <Switch>
           <Route exact path="/" component={Home} />
+          <Route exact path="/authors" component={Authors} />
           <Route exact path="/authors/add-author" component={AddAuthor} />
-          <Route exact path={"/authors"} component={Authors} />
           <Route exact path="/authors/:id" component={AuthorSingle} />
-          <Route exact path="/books/add-book" component={AddBook} />
           <Route exact path="/books" component={Books} />
+          <Route exact path="/books/my-books" component={MyBooks} />
+          <Route exact path="/books/add-book" component={AddBook} />
           <Route exact path="/books/:id" component={BookSingle} />
           <Route exact path="/user-settings" component={UserSettings} />
           <Route exact path="/user" component={UserPage} />
