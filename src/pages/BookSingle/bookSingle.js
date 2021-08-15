@@ -34,16 +34,19 @@ export default function BookSingle({ books }) {
         <h1 align="center">Book single page</h1>
         {book ? (
           <>
+          {
+            book.imageLink &&
             <img
               src={
                 [".jpeg", ".jpg", ".png", ".svg"].includes(
-                  book.imageLink.slice(book.imageLink.lastIndexOf("."))
-                ) && book.imageLink.startsWith("http")
-                  ? book.imageLink
+                  book?.imageLink.slice(book?.imageLink.lastIndexOf("."))
+                ) && book?.imageLink.startsWith("http")
+                  ? book?.imageLink
                   : defaultBookImg
               }
               alt="book"
             />
+          }
             <p>
               Book title: <i>{book.title}</i>
             </p>

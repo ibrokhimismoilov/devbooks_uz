@@ -87,6 +87,13 @@ export default function Navbar() {
             <Link
               onClick={() => setMobileToggler(false)}
               className="navbar__user-link"
+              to="/books/my-books"
+            >
+              My books
+            </Link>
+            <Link
+              onClick={() => setMobileToggler(false)}
+              className="navbar__user-link"
               to="/user-settings"
             >
               Settings

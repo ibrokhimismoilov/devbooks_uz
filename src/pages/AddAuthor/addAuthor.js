@@ -4,28 +4,27 @@ import apiClient from "../../services/apiClient";
 import defaultImg from "../../assets/images/authors/defaultAddAuthor.svg";
 import Swal from "sweetalert2";
 import { useHistory } from "react-router-dom";
+import { getValidInputData } from "../../utils/validInputData";
 
 const initialState = {
   firstName: "" /* required */,
   lastName: "" /* required */,
   date_of_birth: null,
   date_of_death: null,
-  // country: "",
-  // bio: "",
+  isDead: false,
 };
 
 export default function AddBook() {
   const history = useHistory();
   const [waitResAnimate, setWaitResAnimate] = useState(false);
   const [uploadError, setUploadError] = useState(null);
-  const [isDead, setIsDead] = useState(false);
   const [value, setValue] = useState(initialState);
 
   const inputHandler = (e) => {
-    const { value, name } = e.target;
+    const { value, name, checked } = e.target;
     setValue((prevState) => ({
       ...prevState,
-      [name]: value,
+      [name]: name === "isDead" ? checked : value,
     }));
   };
 
@@ -36,15 +35,18 @@ export default function AddBook() {
       e.target[i].setAttribute("disabled", "disabled");
     }
     try {
-      const requsetData = value.date_of_death
-        ? value
-        : {
-            firstName: value.firstName,
-            lastName: value.lastName,
-            date_of_birth: value.date_of_birth,
-          };
+      // const requsetData = value.date_of_death
+      //   ? value
+      //   : {
+      //       firstName: value.firstName,
+      //       lastName: value.lastName,
+      //       date_of_birth: value.date_of_birth,
+      //     };
+      // const { data } = await apiClient.post("/authors", requsetData);
 
-      const { data } = await apiClient.post("/authors", requsetData);
+      const formDataToSubmit = getValidInputData(value, ["isDead"]);
+      const { data } = await apiClient.post("/authors", formDataToSubmit);
+
       setWaitResAnimate(false);
 
       if (data.success) {
@@ -64,10 +66,7 @@ export default function AddBook() {
           setValue(initialState);
         });
       } else {
-        console.log(
-          "addAuthor data success false: ",
-          data?.details[0]?.message
-        );
+        console.log("addBook data success false: ", data?.details[0]?.message);
         const msg = data?.details[0]?.message;
         setUploadError(msg);
       }
@@ -148,14 +147,10 @@ export default function AddBook() {
             />
           </div>
           <label className="add__form-desc">
-            <input
-              type="checkbox"
-              name="isDead"
-              onChange={() => setIsDead((state) => !state)}
-            />{" "}
-            Is the author dead?
+            <input type="checkbox" name="isDead" onChange={inputHandler} /> Is
+            the author dead?
           </label>
-          {isDead && (
+          {value.isDead && (
             <div className="add__form-inputbox">
               <input
                 type="date"
@@ -167,26 +162,6 @@ export default function AddBook() {
               />
             </div>
           )}
-          {/* <div className="add__form-inputbox">
-            <input
-              type="text"
-              placeholder="country"
-              name="country"
-              value={value.country}
-              onChange={inputHandler}
-              //   required
-            />
-          </div> */}
-          {/* <div className="add__form-inputbox add__form-inputbox--textarea">
-            <textarea
-              type="text"
-              placeholder="bio"
-              name="bio"
-              value={value.bio}
-              onChange={inputHandler}
-              // required
-            />
-          </div> */}
 
           {waitAnimate}
           {uploadError && <span className="error-msg">{uploadError}</span>}

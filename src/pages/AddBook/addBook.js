@@ -1,50 +1,73 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { useHistory } from "react-router-dom";
+import Swal from "sweetalert2";
 import apiClient from "../../services/apiClient";
 import defaultImg from "../../assets/images/books/defaultAddBook.svg";
+import { getValidInputData } from "../../utils/validInputData";
 
+const initialState = {
+  title: "" /* required */,
+  author: "" /* required */,
+  description: "",
+  country: "",
+  language: "",
+  pages: "",
+  year: "",
+  price: "",
+};
 export default function AddBook() {
+  const history = useHistory();
+  const [uploadImg, setUploadImg] = useState("");
   const [authors, setAuthors] = useState([]);
-  const [waitResAnimate, setWaitResAnimate] = useState(false);
-  const [uploadError, setUploadError] = useState(null);
+  const [value, setValue] = useState(initialState);
 
-  const [value, setValue] = useState({
-    title: "" /* required */,
-    author: authors || [] /* required */,
-    description: "",
-    country: "",
-    imageLink: "",
-    language: "",
-    link: "",
-    pages: "",
-    year: "",
-    rate: 0,
-    price: "",
-    category: "classic" /* classic | biography | science */,
-    isPublished: true,
-  });
+  const [authorsError, setAuthorsError] = useState("");
+  const [waitResAnimate, setWaitResAnimate] = useState(false);
+  const [uploadError, setUploadError] = useState("");
+  const fileRef = useRef();
+  const imgRef = useRef();
 
   useEffect(() => {
+    // Fetching Authors
     (async () => {
       try {
         const { data } = await apiClient("/authors");
-        console.log(data);
         if (data.success) {
           setAuthors(data.payload);
+          setValue((prev) => ({
+            ...prev,
+            author: data.payload.length ? data.payload[0]._id : "",
+          }));
         } else {
-          console.log("Authors get response data.success=false: ", data);
+          setAuthorsError(
+            data?.message || data?.msg || "Aftorlarni yuklay olmadi"
+          );
         }
       } catch (err) {
-        console.log("Authors get request noworking err: ", err);
+        setAuthorsError(err?.message || err?.msg || "Aftorlarni yuklay olmadi");
       }
     })();
   }, []);
 
   const inputHandler = (e) => {
     const { value, name } = e.target;
-    setValue((prevState) => ({ ...prevState, [name]: value }));
+    setValue((prev) => ({ ...prev, [name]: value }));
   };
 
-  console.log(value);
+  const uploadImgHandler = (e) => {
+    if (e.target.files[0]) {
+      var reader = new FileReader();
+      reader.onload = function (e) {
+        setUploadImg(e.target.result);
+      };
+      reader.readAsDataURL(e.target.files[0]);
+    }
+  };
+
+  if (fileRef?.current?.files[0] && imgRef?.current?.files[0]) {
+    console.log(fileRef.current.files[0]);
+    console.log(imgRef.current.files[0]);
+  }
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -53,29 +76,59 @@ export default function AddBook() {
       e.target[i].setAttribute("disabled", "disabled");
     }
     try {
-      const { data } = await apiClient.post("/books", value);
-      setWaitResAnimate(false);
-      if (data.success) {
-        // console.log("data success 200", data);
-        
+      const formDataToSubmit = getValidInputData(value);
 
+      const formData = new FormData();
+      for (let x in formDataToSubmit) {
+        formData.append(x, formDataToSubmit[x]); // {name: '12'}
+      }
+
+      if (fileRef?.current?.files[0] && imgRef?.current?.files[0]) {
+        formData.append(
+          "files",
+          JSON.parse([fileRef?.current?.files[0], imgRef?.current?.files[0]])
+        );
+      }
+
+      // Display the key/value pairs
+      for (var pair of formData.entries()) {
+        console.log("formData =>", pair[0] + ", " + pair[1]);
+      }
+
+      const { data } = await apiClient.post("/books", formData);
+      console.log("data =>", data);
+
+      if (data.success) {
+        console.log("success=true", data);
+        Swal.fire({
+          title: "Muoffaqiyatlik",
+          text: "Kitob Muoffaqiyatlik qo'shildi",
+          icon: "success",
+          showCancelButton: true,
+          cancelButtonText: "Mening kitoblarim",
+          confirmButtonText: "Yana kitob qo'shish",
+        }).then(({ value }) => {
+          if (!value) {
+            history.replace("/books/my-books");
+          }
+          setValue({ author: authors[0]._id, ...initialState });
+          setUploadError("");
+        });
       } else {
-        // console.log("success=false: err =>", data);
+        console.log("success=false: err =>", data);
         const msg = data?.msg;
         setUploadError(msg);
       }
-      for (let i = 0; i < e.target.length; i++) {
-        e.target[i].removeAttribute("disabled");
-      }
     } catch (err) {
-      // console.log("catch err =>",  err.response.data);
-      const msg = err.response?.data || err.response?.data?.error;
-      // console.log("login Error", msg);
+      console.log("catch err =>", err);
+      console.log("catch err =>", err?.response?.data);
+      const msg = err?.response?.data || err?.response?.data?.error;
       setUploadError(msg);
-      setWaitResAnimate(false);
-      for (let i = 0; i < e.target.length; i++) {
-        e.target[i].removeAttribute("disabled");
-      }
+    }
+
+    setWaitResAnimate(false);
+    for (let i = 0; i < e.target.length; i++) {
+      e.target[i].removeAttribute("disabled");
     }
   };
 
@@ -92,10 +145,28 @@ export default function AddBook() {
     <form className="add" onSubmit={submitHandler}>
       <div className="add__img">
         <div className="add__img-inner">
-          <img src={defaultImg} alt="default" />
+          <img src={uploadImg || defaultImg} alt="author" />
           <label className="add__form-btn">
-            <input type="file" hidden />
-            Upload cover
+            <input
+              type="file"
+              ref={imgRef}
+              onChange={uploadImgHandler}
+              hidden
+              // name="image"
+              // value={value.image}
+            />
+            Upload Image
+          </label>
+          <label className="add__form-btn">
+            <input
+              type="file"
+              ref={fileRef}
+              hidden
+              // name="link"
+              // value={value.link}
+              // onChange={inputHandler}
+            />
+            Upload File
           </label>
         </div>
       </div>
@@ -112,23 +183,26 @@ export default function AddBook() {
               required
             />
           </div>
-          <div className="add__form-inputbox">
-            <select
-              name="author"
-              value={value.author}
-              onChange={inputHandler}
-              required
-            >
-              {authors.map((item) => {
-                const { _id, firstName, lastName } = item;
-                return (
-                  <option value={_id} key={_id}>
-                    {`${firstName} ${lastName}`}
-                  </option>
-                );
-              })}
-            </select>
-          </div>
+          {authors.length ? (
+            <div className="add__form-inputbox">
+              <select
+                name="author"
+                value={value.author}
+                onChange={inputHandler}
+                multiple={false}
+                required
+              >
+                {authors.map((item) => {
+                  const { _id, firstName, lastName } = item;
+                  return (
+                    <option value={_id} key={_id}>
+                      {`${firstName} ${lastName}`}
+                    </option>
+                  );
+                })}
+              </select>
+            </div>
+          ) : null}
           <div className="add__form-inputbox">
             <input
               type="text"
@@ -179,26 +253,6 @@ export default function AddBook() {
               //   required
             />
           </div>
-          <div className="add__form-inputbox">
-            <input
-              type="text"
-              placeholder="imageLink"
-              name="imageLink"
-              value={value.imageLink}
-              onChange={inputHandler}
-              //   required
-            />
-          </div>
-          <div className="add__form-inputbox">
-            <input
-              type="text"
-              placeholder="link"
-              name="link"
-              value={value.link}
-              onChange={inputHandler}
-              //   required
-            />
-          </div>
           <div className="add__form-inputbox add__form-inputbox--textarea">
             <textarea
               type="text"
@@ -212,6 +266,7 @@ export default function AddBook() {
 
           {waitAnimate}
           {uploadError && <span className="error-msg">{uploadError}</span>}
+          {authorsError && <span className="error-msg">{authorsError}</span>}
 
           <button className="add__form-btn">New book</button>
         </div>
