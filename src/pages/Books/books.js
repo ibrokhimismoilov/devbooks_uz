@@ -8,42 +8,144 @@ import LoaderGrid from "../../components/Loader/LoaderGrid";
 // icons
 import { FaRegMoneyBillAlt, FaRegEye } from "react-icons/fa";
 import { BiBookAlt } from "react-icons/bi";
-import { AiOutlineUser } from "react-icons/ai";
+import { AiOutlineLeft, AiOutlineRight, AiOutlineUser } from "react-icons/ai";
 
 export default function Books() {
   const [loading, setLoading] = useState(false);
-
+  const [searchData, setSearchData] = useState([]);
   const [books, setBooks] = useState([]);
+  const [pagination, setPagination] = useState({
+    hasNextPage: null,
+    hasPrevPage: null,
+    nextPage: null,
+    prevPage: null,
+    page: null,
+    totalPages: null,
+  });
+
+  const fetchBooks = async () => {
+    setLoading(true);
+    try {
+      const { data } = await apiClient("/books");
+      console.log("Fetch data => ", data);
+      const { docs, ...restPagination } = data.payload;
+      setPagination(restPagination);
+      setBooks(docs);
+      setLoading(false);
+    } catch (err) {
+      console.log("Fetch err => ", err);
+      setLoading(false);
+    }
+  };
+
+  const searchBooks = async () => {
+    setLoading(true);
+    try {
+      const { data } = await apiClient(`/books/search?title=${searchData}`);
+      console.log(data.payload);
+      setBooks(data.payload);
+      setLoading(false);
+    } catch (err) {
+      console.log(err);
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    setLoading(true);
-    apiClient("/books")
-      .then((res) => {
-        console.log(res.data.payload.docs);
-        setBooks(res.data.payload.docs);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        setLoading(false);
-      });
+    fetchBooks();
   }, []);
+
+  useEffect(() => {
+    if (searchData.length) {
+      searchBooks();
+    } else {
+      fetchBooks();
+    }
+  }, [searchData]);
+
+  const queryPageHandler = async (page = 1) => {
+    alert(page);
+    setLoading(true);
+    try {
+      const { data } = await apiClient(`/books?page=${page}`);
+      console.log("Query Books data =>>>", data);
+      const { docs, ...restPagination } = data.payload;
+      setPagination(restPagination);
+      setBooks(docs);
+      setLoading(false);
+    } catch (err) {
+      console.log("Query Books err =>>>", err);
+      setLoading(false);
+    }
+  };
+
+  const Pagination = ({
+    totalPages,
+    page,
+    hasNextPage,
+    hasPrevPage,
+    nextPage,
+    prevPage,
+  }) => {
+    return (
+      <ul className="pagination">
+        <li
+          className={`page-item page-prev ${!hasPrevPage ? "disabled" : ""}`}
+          onClick={hasPrevPage ? () => queryPageHandler(prevPage) : null}
+        >
+          <AiOutlineLeft />
+        </li>
+
+        {Array(totalPages)
+          .fill(1)
+          .map((item, index) => {
+            return (
+              <li
+                key={index}
+                className={`page-item ${index + 1 === page ? "active" : ""}`}
+                onClick={() => queryPageHandler(index + 1)}
+              >
+                {index + 1}
+              </li>
+            );
+          })}
+        <li
+          className={`page-item page-next ${!hasNextPage ? "disabled" : ""}`}
+          onClick={hasNextPage ? () => queryPageHandler(nextPage) : null}
+        >
+          <AiOutlineRight />
+        </li>
+      </ul>
+    );
+  };
+
+  console.log(pagination);
 
   return (
     <div className="books">
-      <Header />
+      <Header visibleSearch={true} searchDataHander={setSearchData} />
       <div className="auto-container">
-        <h1 className="books-title">Asosiy kategoriyalar</h1>
-        <div className="books__filter">
-          <button className="books__filter-btn">Temuriylar davri</button>
-          <button className="books__filter-btn">Jadid adabiyoti</button>
-          <button className="books__filter-btn">Sovet davri</button>
-          <button className="books__filter-btn">Mustaqillik davri</button>
-        </div>
+        {searchData?.length ? (
+          <h1 className="books-title">
+            Siz qidirgan <span className="search-title">{searchData}</span>
+            oid kitoblar
+            {/* - {books?.length ? books?.length + "ta" : "topilmadi"} */}
+          </h1>
+        ) : (
+          <>
+            <h1 className="books-title">Asosiy kategoriyalar</h1>
+            <div className="books__filter">
+              <button className="books__filter-btn">Temuriylar davri</button>
+              <button className="books__filter-btn">Jadid adabiyoti</button>
+              <button className="books__filter-btn">Sovet davri</button>
+              <button className="books__filter-btn">Mustaqillik davri</button>
+            </div>
+          </>
+        )}
 
         <div className="books__wrapper">
           {!loading ? (
-            books.map((book) => {
+            books?.map((book) => {
               return (
                 <Link
                   key={book._id}
@@ -54,7 +156,9 @@ export default function Books() {
                     <img
                       src={
                         [".jpeg", ".jpg", ".png", ".svg"].includes(
-                          book?.imageLink?.slice(book?.imageLink?.lastIndexOf("."))
+                          book?.imageLink?.slice(
+                            book?.imageLink?.lastIndexOf(".")
+                          )
                         ) && book?.imageLink?.startsWith("http")
                           ? book?.imageLink
                           : defaultBookImg
@@ -73,13 +177,13 @@ export default function Books() {
                       <AiOutlineUser /> {book.author.firstName}{" "}
                       {book.author.lastName}
                     </p>
-                    <p className="books">
+                    <p className="icon-text">
                       <FaRegMoneyBillAlt />: ${book.price}
                     </p>
-                    <p className="books">
+                    <p className="icon-text">
                       <FaRegEye />: {book.views} view
                     </p>
-                    <p className="books">
+                    <p className="icon-text">
                       <BiBookAlt />: {book.pages} pages
                     </p>
                   </div>
@@ -90,6 +194,7 @@ export default function Books() {
             <LoaderGrid />
           )}
         </div>
+        <Pagination {...pagination} queryPageHandler={queryPageHandler} />
       </div>
     </div>
   );

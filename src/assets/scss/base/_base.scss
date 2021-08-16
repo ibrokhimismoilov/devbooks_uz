@@ -49,3 +49,51 @@ a:focus {
 .has-error {
   color: red;
 }
+
+.search-title {
+  font-family: $rob;
+  font-weight: 100;
+  margin: 0 10px;
+}
+
+.pagination {
+  justify-content: center;
+  display: flex;
+  column-gap: 10px;
+  list-style-type: none;
+  user-select: none;
+  .page {
+    &-item {
+      // &:not(:last-child) {
+      //   margin-right: 5px;
+      // }
+      cursor: pointer;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+      font-size: 16px;
+      color: $text-color;
+      background: transparent;
+      border: 1px solid $primary;
+
+      &.disabled {
+        cursor: default;
+        background: darken($text-color, 70%) !important;
+      }
+
+      &:not(.active) {
+        &:hover {
+          background: $primary;
+        }
+      }
+
+      &.active {
+        color: $text-white;
+        background: darken($primary, 15%);
+      }
+    }
+  }
+}

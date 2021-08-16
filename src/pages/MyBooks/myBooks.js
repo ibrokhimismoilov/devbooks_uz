@@ -79,13 +79,13 @@ export default function MyBooks() {
                         <AiOutlineUser /> {book.author.firstName}{" "}
                         {book.author.lastName}
                       </p>
-                      <p className="books">
+                      <p className="icon-text">
                         <FaRegMoneyBillAlt />: ${book.price}
                       </p>
-                      <p className="books">
+                      <p className="icon-text">
                         <FaRegEye />: {book.views} view
                       </p>
-                      <p className="books">
+                      <p className="icon-text">
                         <BiBookAlt />: {book.pages} pages
                       </p>
                     </div>

@@ -15,7 +15,7 @@ const slides = [
   { img: banner4, title: "O'zbekiston tarixi va adabiyoti" },
 ];
 
-export default function Header() {
+export default function Header({ visibleSearch, searchDataHander }) {
   const settings = {
     dots: true,
     accessibility: false,
@@ -26,6 +26,13 @@ export default function Header() {
     fade: true,
     autoplay: true,
     autoplaySpeed: 5000,
+  };
+
+  const searchHandler = (e) => {
+    e.preventDefault();
+    e.target[0].value.length
+      ? searchDataHander(e.target[0].value)
+      : searchDataHander("");
   };
 
   return (
@@ -39,18 +46,20 @@ export default function Header() {
         ))}
       </Slider>
 
-      <form className="header__search">
-        <h1 className="header__search-title">Qidirish</h1>
-        <input
-          type="text"
-          className="header__search-input"
-          placeholder="Adiblar, kitoblar, audiolar, maqolalar..."
-        />
-        <button className="header__search-btn">
-          <BiSearchAlt />
-          Izlash
-        </button>
-      </form>
+      {visibleSearch && (
+        <form className="header__search" onSubmit={searchHandler}>
+          <h1 className="header__search-title">Qidirish</h1>
+          <input
+            type="text"
+            className="header__search-input"
+            placeholder="Adiblar, kitoblar, audiolar, maqolalar..."
+          />
+          <button className="header__search-btn">
+            <BiSearchAlt />
+            Izlash
+          </button>
+        </form>
+      )}
     </HeaderStyled>
   );
 }

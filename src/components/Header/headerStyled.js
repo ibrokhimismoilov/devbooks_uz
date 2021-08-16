@@ -17,6 +17,15 @@ export const HeaderStyled = styled.header`
 
       user-select: none;
 
+      .slick-track {
+        border: none !important;
+        outline: none !important;
+        * {
+          border: none !important;
+          outline: none !important;
+        }
+      }
+
       .slick-active .content {
         animation: fadeToRight 0.4s 0.8s ease 1 forwards;
       }
@@ -27,7 +36,7 @@ export const HeaderStyled = styled.header`
 
       .slick-dots {
         position: absolute;
-        z-index: 2;
+        z-index: 5;
         bottom: 80px;
         left: 80px;
         display: flex !important;
@@ -70,16 +79,29 @@ export const HeaderStyled = styled.header`
 
       &-item {
         position: relative;
+        z-index: 1;
         padding: 45px 80px;
         width: 100%;
         height: 347px;
         border-radius: 25px;
         overflow: hidden;
 
+        &::before {
+          content: "";
+          position: absolute;
+          z-index: 2;
+          left: 0;
+          top: 0;
+          display: block;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(0, 0, 0, 0.5);
+        }
+
         .content {
           display: block;
           position: relative;
-          z-index: 1;
+          z-index: 3;
           max-width: 337px;
           width: 100%;
           font-size: 61px;
