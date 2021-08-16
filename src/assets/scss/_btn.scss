@@ -1,33 +1,33 @@
 .btn {
-    height: 44px;
-    padding: 12px 20px;
-    font-size: 20px;
-    font-weight: 700;
-    font-family: $rob700;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition:  all .3s linear;
-    cursor: pointer;
-    overflow: hidden;
-    border-radius: 4px;
-    font-size: 16px;
+  height: 44px;
+  padding: 12px 20px;
+  font-size: 20px;
+  font-weight: 700;
+  font-family: $rob700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s linear;
+  cursor: pointer;
+  overflow: hidden;
+  border-radius: 4px;
+  font-size: 16px;
+  text-transform: capitalize !important;
 
-    &.btn-darkblue {
-        color: #fff;
-        background: #152540;
-        border: 1px solid #152540;
-    
+  &.btn-darkblue {
+    color: #fff;
+    background: #152540;
+    border: 1px solid #152540;
 
-        &:focus,
-        &:hover {
-            outline: none;
-            background: #fff;
-            color: #152540;
-        }
-
-        &:active {
-            background: #f8f8f8;
-        }
+    &:focus,
+    &:hover {
+      outline: none;
+      background: #fff;
+      color: #152540;
     }
+
+    &:active {
+      background: #f8f8f8;
+    }
+  }
 }

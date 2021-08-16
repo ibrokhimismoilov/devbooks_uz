@@ -27,7 +27,7 @@ import MyBooks from "./pages/MyBooks";
 export default function App() {
   const { token } = useSelector((state) => state.user);
   const store = useSelector((state) => state);
-  
+
   console.log("REDUX STORE:", store);
 
   if (token) {
@@ -35,12 +35,12 @@ export default function App() {
       <>
         <Navbar />
         <Switch>
-          <Route exact path="/" component={Home} />
+          {/* <Route exact path="/" component={Home} /> */}
           <Route exact path="/authors" component={Authors} />
           <Route exact path="/authors/add-author" component={AddAuthor} />
           <Route exact path="/authors/:id" component={AuthorSingle} />
           <Route exact path="/books" component={Books} />
-          <Route exact path="/books/my-books" component={MyBooks} />
+          <Route exact path={["/books/my-books", "/"]} component={MyBooks} />
           <Route exact path="/books/add-book" component={AddBook} />
           <Route exact path="/books/:id" component={BookSingle} />
           <Route exact path="/user-settings" component={UserSettings} />

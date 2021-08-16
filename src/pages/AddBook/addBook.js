@@ -84,10 +84,8 @@ export default function AddBook() {
       }
 
       if (fileRef?.current?.files[0] && imgRef?.current?.files[0]) {
-        formData.append(
-          "files",
-          JSON.parse([fileRef?.current?.files[0], imgRef?.current?.files[0]])
-        );
+        formData.append("files[0]", fileRef?.current?.files[0]);
+        formData.append("files[1]", imgRef?.current?.files[0]);
       }
 
       // Display the key/value pairs

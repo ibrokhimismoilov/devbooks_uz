@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import defaultBookImg from "../../assets/images/books/book.svg";
 import LoaderGrid from "../../components/Loader/LoaderGrid";
 import apiClient from "../../services/apiClient";
 import emptyBookShelf from "../../assets/images/books/bookshelf.jpg";
+
+// icons
+import { FaRegMoneyBillAlt, FaRegEye } from "react-icons/fa";
+import { BiBookAlt } from "react-icons/bi";
+import { AiOutlineUser } from "react-icons/ai";
 
 export default function MyBooks() {
   const [books, setBooks] = useState([]);
@@ -37,6 +42,8 @@ export default function MyBooks() {
     }
   };
 
+  console.log(books);
+
   return (
     <div className="books">
       <div className="auto-container">
@@ -69,11 +76,17 @@ export default function MyBooks() {
                           : book.title}
                       </h1>
                       <p className="author">
-                        {book.author.firstName} {book.author.lastName}
+                        <AiOutlineUser /> {book.author.firstName}{" "}
+                        {book.author.lastName}
                       </p>
                       <p className="books">
-                        price: ${book.price}&nbsp; ko'rilgan: {book.views}&nbsp;
-                        sahifa: {book.pages}
+                        <FaRegMoneyBillAlt />: ${book.price}
+                      </p>
+                      <p className="books">
+                        <FaRegEye />: {book.views} view
+                      </p>
+                      <p className="books">
+                        <BiBookAlt />: {book.pages} pages
                       </p>
                     </div>
                     <div className="footer">
@@ -87,7 +100,7 @@ export default function MyBooks() {
                         className="btn btn-open"
                         onClick={() => history.push("/books/" + book._id)}
                       >
-                        Open
+                        read
                       </button>
                       <button
                         className="btn btn-edit"

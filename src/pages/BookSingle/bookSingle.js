@@ -29,88 +29,49 @@ export default function BookSingle({ books }) {
   console.log("Single book => ", book);
 
   return (
-    <div className="book-single">
+    <div className="books-single">
       <div className="auto-container">
-        <h1 align="center">Book single page</h1>
+        <h1 align="center">{book.title}</h1>
         {book ? (
-          <>
-          {
-            book.imageLink &&
-            <img
-              src={
-                [".jpeg", ".jpg", ".png", ".svg"].includes(
-                  book?.imageLink.slice(book?.imageLink.lastIndexOf("."))
-                ) && book?.imageLink.startsWith("http")
-                  ? book?.imageLink
-                  : defaultBookImg
-              }
-              alt="book"
-            />
-          }
-            <p>
-              Book title: <i>{book.title}</i>
-            </p>
-            <p>
-              Book desc: <i>{book.description}</i>
-            </p>
-            <p>
-              Book country: <i>{book.country}</i>
-            </p>
-            <p>
-              Book author firstName: <i>{book.author.firstName}</i>
-            </p>
-            <p>
-              Book author lastName: <i>{book.author.lastName}</i>
-            </p>
-            <p>
-              Book author id: <i>{book.author._id}</i>
-            </p>
-            <p>
-              Book author date_of_birth:{" "}
-              <i>{new Date(book.author.date_of_birth).toLocaleDateString()}</i>
-            </p>
-            <p>
-              Book author date_of_death:{" "}
-              <i>{new Date(book.author.date_of_death).toLocaleDateString()}</i>
-            </p>
-            <p>
-              Book author __v: <i>{book.author.__v}</i>
-            </p>
-            <p>
-              Book isPublished: <i>{book.isPublished}</i>
-            </p>
-            <p>
-              Book language: <i>{book.language}</i>
-            </p>
-            <p>
-              Book link: <i>{book.link}</i>
-            </p>
-            <p>
-              Book pages: <i>{book.pages}</i>
-            </p>
-            <p>
-              Book price: <i>{book.price}</i>
-            </p>
-            <p>
-              Book rate: <i>{book.rate}</i>
-            </p>
-            <p>
-              Book updatedAt:{" "}
-              <i>{new Date(book.updatedAt).toLocaleDateString()}</i>
-            </p>
-            <p>
-              Book views: <i>{book.views}</i>
-            </p>
-            <p>
-              Book year: <i>{book.year}</i>
-            </p>
-            <p>
-              Book id: <i>{book._id}</i>
-            </p>
-            <p>
-              Book __v: <i>{book.__v}</i>
-            </p>
-          </>
+          <div className="books-single__wrapper">
+            {book.imageLink && (
+              <img
+                className="books-single__img"
+                src={
+                  [".jpeg", ".jpg", ".png", ".svg"].includes(
+                    book?.imageLink.slice(book?.imageLink.lastIndexOf("."))
+                  ) && book?.imageLink.startsWith("http")
+                    ? book?.imageLink
+                    : defaultBookImg
+                }
+                alt="book"
+              />
+            )}
+            <ul>
+              <li>
+                About of author
+                <ul>
+                  <li>
+                    FullName: {book.author.firstName} {book.author.lastName}
+                  </li>
+                  <li>
+                    Data:{" "}
+                    {new Date(book.author.date_of_birth).toLocaleDateString()} /{" "}
+                    {new Date(book.author.date_of_death).toLocaleDateString()}
+                  </li>
+                </ul>
+              </li>
+              <li>Link: {book.link}</li>
+              <li>Pages: {book.pages}</li>
+              <li>Price: {book.price}</li>
+              <li>Views: {book.views}</li>
+              <li>Year: {book.year}</li>
+              <li>Country: {book.country}</li>
+              <li>Language: {book.language}</li>
+              <li>Updated: {new Date(book.updatedAt).toLocaleDateString()}</li>
+              <li>Desc: {book.description}</li>
+            </ul>
+          </div>
         ) : (
           <LoaderGrid />
         )}

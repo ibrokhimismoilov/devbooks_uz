@@ -2,9 +2,13 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Header from "../../components/Header";
 import apiClient from "../../services/apiClient";
-
 import defaultBookImg from "../../assets/images/books/book.svg";
 import LoaderGrid from "../../components/Loader/LoaderGrid";
+
+// icons
+import { FaRegMoneyBillAlt, FaRegEye } from "react-icons/fa";
+import { BiBookAlt } from "react-icons/bi";
+import { AiOutlineUser } from "react-icons/ai";
 
 export default function Books() {
   const [loading, setLoading] = useState(false);
@@ -66,11 +70,17 @@ export default function Books() {
                         : book.title}
                     </h1>
                     <p className="author">
-                      {book.author.firstName} {book.author.lastName}
+                      <AiOutlineUser /> {book.author.firstName}{" "}
+                      {book.author.lastName}
                     </p>
                     <p className="books">
-                      price: ${book.price}&nbsp; ko'rilgan: {book.views}&nbsp;
-                      sahifa: {book.pages}
+                      <FaRegMoneyBillAlt />: ${book.price}
+                    </p>
+                    <p className="books">
+                      <FaRegEye />: {book.views} view
+                    </p>
+                    <p className="books">
+                      <BiBookAlt />: {book.pages} pages
                     </p>
                   </div>
                 </Link>
