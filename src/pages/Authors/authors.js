@@ -9,7 +9,7 @@ import LoaderGrid from "../../components/Loader/LoaderGrid";
 
 export default function Authors() {
   const [authors, setAuthors] = useState([]);
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -18,7 +18,6 @@ export default function Authors() {
         console.log(res.data.payload);
         setAuthors(res.data.payload);
         setLoading(false);
-      
       })
       .catch((err) => {
         console.log(err);
@@ -30,13 +29,14 @@ export default function Authors() {
     <div className="authors">
       <Header />
       <div className="auto-container">
-        <h1 className="authors-title">Asosiy kategoriyalar</h1>
-        <div className="authors__filter">
+        <h1 className="authors-title">Barcha mualliflar</h1>
+        {/* <h1 className="authors-title">Asosiy kategoriyalar</h1> */}
+        {/* <div className="authors__filter">
           <button className="authors__filter-btn">Temuriylar davri</button>
           <button className="authors__filter-btn">Jadid adabiyoti</button>
           <button className="authors__filter-btn">Sovet davri</button>
           <button className="authors__filter-btn">Mustaqillik davri</button>
-        </div>
+        </div> */}
         <div className="authors__wrapper">
           {!loading ? (
             authors.map((author) => {
@@ -55,12 +55,13 @@ export default function Authors() {
                       {author.firstName} {author.lastName}
                     </h1>
                     <p className="year">
-                      {new Date(author.date_of_birth).toLocaleDateString()} - {new Date(author.date_of_death).toLocaleDateString()}
+                      {new Date(author.date_of_birth).toLocaleDateString()} -{" "}
+                      {new Date(author.date_of_death).toLocaleDateString()}
                     </p>
-                    <p className="books">
+                    {/* <p className="icon-text">
                       <RiBookFill /> {author.books} - <RiVolumeUpFill />{" "}
                       {author.audios}
-                    </p>
+                    </p> */}
                   </div>
                 </Link>
               );

@@ -14,7 +14,10 @@ const initialState = {
   pages: "",
   year: "",
   price: "",
+  category: "",
 };
+const categories = ["classic", "biography", "science"];
+
 export default function AddBook() {
   const history = useHistory();
   const [uploadImg, setUploadImg] = useState("");
@@ -154,11 +157,7 @@ export default function AddBook() {
             Upload Image
           </label>
           <label className="add__form-btn">
-            <input
-              type="file"
-              ref={fileRef}
-              hidden
-            />
+            <input type="file" ref={fileRef} hidden />
             Upload File
           </label>
         </div>
@@ -196,6 +195,23 @@ export default function AddBook() {
               </select>
             </div>
           ) : null}
+          <div className="add__form-inputbox">
+            <select
+              name="category"
+              value={value.category}
+              onChange={inputHandler}
+              required
+            >
+              {categories.map((item) => {
+                return (
+                  <option value={item} key={item}>
+                    {item}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+
           <div className="add__form-inputbox">
             <input
               type="text"

@@ -59,14 +59,10 @@ a:focus {
 .pagination {
   justify-content: center;
   display: flex;
-  column-gap: 10px;
   list-style-type: none;
   user-select: none;
   .page {
     &-item {
-      // &:not(:last-child) {
-      //   margin-right: 5px;
-      // }
       cursor: pointer;
       width: 40px;
       height: 40px;
@@ -78,6 +74,10 @@ a:focus {
       color: $text-color;
       background: transparent;
       border: 1px solid $primary;
+
+      &:not(:last-child) {
+        margin-right: 5px;
+      }
 
       &.disabled {
         cursor: default;

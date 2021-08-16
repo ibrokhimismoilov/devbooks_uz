@@ -10,7 +10,18 @@ import { FaRegMoneyBillAlt, FaRegEye } from "react-icons/fa";
 import { BiBookAlt } from "react-icons/bi";
 import { AiOutlineLeft, AiOutlineRight, AiOutlineUser } from "react-icons/ai";
 
+const categoryBtns = [
+  { name: "all", id: 1 },
+  { name: "classic", id: 2 },
+  { name: "biography", id: 3 },
+  { name: "science", id: 4 },
+];
+
 export default function Books() {
+  // book category
+  const [activeCategory, setActiveCategory] = useState(1);
+  const [categoryData, setCategoryData] = useState([]);
+
   const [loading, setLoading] = useState(false);
   const [searchData, setSearchData] = useState([]);
   const [books, setBooks] = useState([]);
@@ -31,6 +42,7 @@ export default function Books() {
       const { docs, ...restPagination } = data.payload;
       setPagination(restPagination);
       setBooks(docs);
+      setCategoryData(docs);
       setLoading(false);
     } catch (err) {
       console.log("Fetch err => ", err);
@@ -44,6 +56,7 @@ export default function Books() {
       const { data } = await apiClient(`/books/search?title=${searchData}`);
       console.log(data.payload);
       setBooks(data.payload);
+      setCategoryData(data.payload);
       setLoading(false);
     } catch (err) {
       console.log(err);
@@ -64,7 +77,6 @@ export default function Books() {
   }, [searchData]);
 
   const queryPageHandler = async (page = 1) => {
-    alert(page);
     setLoading(true);
     try {
       const { data } = await apiClient(`/books?page=${page}`);
@@ -72,6 +84,8 @@ export default function Books() {
       const { docs, ...restPagination } = data.payload;
       setPagination(restPagination);
       setBooks(docs);
+      setCategoryData(docs);
+      setActiveCategory(1);
       setLoading(false);
     } catch (err) {
       console.log("Query Books err =>>>", err);
@@ -119,33 +133,57 @@ export default function Books() {
     );
   };
 
-  console.log(pagination);
+  const CategoryTabs = () => (
+    <div className="books__filter">
+      {categoryBtns.map((item) => {
+        return (
+          <button
+            className={`books__filter-btn ${
+              item.id === activeCategory ? "active" : ""
+            }`}
+            onClick={
+              item.id !== activeCategory ? () => filterHendler(item) : null
+            }
+          >
+            {item.name}
+          </button>
+        );
+      })}
+    </div>
+  );
+
+  const filterHendler = (item) => {
+    setActiveCategory(item.id);
+    let newBooks = books?.filter(
+      (book) =>
+        book.category.toLowerCase() === item.name.toLowerCase() ||
+        item.name.toLowerCase() === "all"
+    );
+    setCategoryData(newBooks);
+  };
+
+  console.log(categoryData);
 
   return (
     <div className="books">
       <Header visibleSearch={true} searchDataHander={setSearchData} />
       <div className="auto-container">
-        {searchData?.length ? (
+        {searchData.length ? (
           <h1 className="books-title">
             Siz qidirgan <span className="search-title">{searchData}</span>
-            oid kitoblar
-            {/* - {books?.length ? books?.length + "ta" : "topilmadi"} */}
+            oid kitoblar -{" "}
+            {books?.length ? books?.length + " ta" : " topilmadi"}
           </h1>
         ) : (
           <>
             <h1 className="books-title">Asosiy kategoriyalar</h1>
-            <div className="books__filter">
-              <button className="books__filter-btn">Temuriylar davri</button>
-              <button className="books__filter-btn">Jadid adabiyoti</button>
-              <button className="books__filter-btn">Sovet davri</button>
-              <button className="books__filter-btn">Mustaqillik davri</button>
-            </div>
+            {CategoryTabs()}
           </>
         )}
 
         <div className="books__wrapper">
           {!loading ? (
-            books?.map((book) => {
+            categoryData?.map((book) => {
               return (
                 <Link
                   key={book._id}
@@ -194,7 +232,9 @@ export default function Books() {
             <LoaderGrid />
           )}
         </div>
-        <Pagination {...pagination} queryPageHandler={queryPageHandler} />
+        {!searchData.length && (
+          <Pagination {...pagination} queryPageHandler={queryPageHandler} />
+        )}
       </div>
     </div>
   );
