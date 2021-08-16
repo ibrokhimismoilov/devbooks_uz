@@ -150,8 +150,6 @@ export default function AddBook() {
               ref={imgRef}
               onChange={uploadImgHandler}
               hidden
-              // name="image"
-              // value={value.image}
             />
             Upload Image
           </label>
@@ -160,9 +158,6 @@ export default function AddBook() {
               type="file"
               ref={fileRef}
               hidden
-              // name="link"
-              // value={value.link}
-              // onChange={inputHandler}
             />
             Upload File
           </label>

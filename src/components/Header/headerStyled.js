@@ -9,15 +9,109 @@ export const HeaderStyled = styled.header`
 
   .header {
     &__banner {
-        overflow: hidden;
-        border-radius: 25px 25px 0 0;
+      position: relative;
+      border-radius: 25px 25px 0 0;
+      margin: 0 auto;
+      max-width: 1262px;
       width: 100%;
-      height: 347px;
-      img {
+
+      user-select: none;
+
+      .slick-active .content {
+        animation: fadeToRight 0.4s 0.8s ease 1 forwards;
+      }
+
+      .slick-arrow {
+        display: none !important;
+      }
+
+      .slick-dots {
+        position: absolute;
+        z-index: 2;
+        bottom: 80px;
+        left: 80px;
+        display: flex !important;
+        flex-direction: row;
+
+        li {
+          display: block !important;
+
+          button {
+            cursor: pointer;
+            outline: none !important;
+            border: none;
+            font-size: 0;
+            width: 57px;
+            height: 5px;
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.6) !important;
+          }
+
+          &:not(:last-child) {
+            margin-right: 5px;
+          }
+
+          &.slick-active button {
+            background-color: rgba(255, 255, 255, 1) !important;
+          }
+        }
+
+        @media (max-width: 767px) {
+          left: 0;
+          justify-content: center;
+          width: 100%;
+
+          li button {
+            width: 20px;
+            height: 5px;
+          }
+        }
+      }
+
+      &-item {
+        position: relative;
+        padding: 45px 80px;
         width: 100%;
-        height: 100%;
-        object-fit: cover;
-        object-position: right;
+        height: 347px;
+        border-radius: 25px;
+        overflow: hidden;
+
+        .content {
+          display: block;
+          position: relative;
+          z-index: 1;
+          max-width: 337px;
+          width: 100%;
+          font-size: 61px;
+          font-weight: 100;
+          font-family: "Rotterburg Stylish FREE";
+          color: #c9ac8c;
+          opacity: 0;
+          transform: translateX(-30px);
+        }
+
+        img {
+          position: absolute;
+          right: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: right;
+        }
+
+        @media (max-width: 767px) {
+          padding: 40px 20px;
+          display: flex;
+          .content {
+            font-size: 32px;
+            text-align: center;
+            left: 0;
+            right: 0;
+            margin: 0 auto;
+            padding: 0 10px;
+          }
+        }
       }
     }
 
@@ -94,15 +188,15 @@ export const HeaderStyled = styled.header`
       }
 
       @media (max-width: 767px) {
-            padding: 30px 15px;
-          &-input {
-              width: 100%;
-              text-align: center;
-          }
+        padding: 30px 15px;
+        &-input {
+          width: 100%;
+          text-align: center;
+        }
 
-          &-btn {
-              margin: 15px auto;
-          }
+        &-btn {
+          margin: 15px auto;
+        }
       }
     }
   }

@@ -54,9 +54,9 @@ export default function Books() {
                     <img
                       src={
                         [".jpeg", ".jpg", ".png", ".svg"].includes(
-                          book.imageLink.slice(book.imageLink.lastIndexOf("."))
-                        ) && book.imageLink.startsWith("http")
-                          ? book.imageLink
+                          book?.imageLink?.slice(book?.imageLink?.lastIndexOf("."))
+                        ) && book?.imageLink?.startsWith("http")
+                          ? book?.imageLink
                           : defaultBookImg
                       }
                       alt="book"
