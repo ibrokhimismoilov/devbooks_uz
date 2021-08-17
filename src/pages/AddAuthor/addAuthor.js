@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-// import { Link } from "react-router-dom";
 import apiClient from "../../services/apiClient";
 import defaultImg from "../../assets/images/authors/defaultAddAuthor.svg";
 import Swal from "sweetalert2";
@@ -66,7 +65,7 @@ export default function AddBook() {
           setValue(initialState);
         });
       } else {
-        console.log("addBook data success false: ", data?.details[0]?.message);
+        // console.log("addBook data success false: ", data?.details[0]?.message);
         const msg = data?.details[0]?.message;
         setUploadError(msg);
       }

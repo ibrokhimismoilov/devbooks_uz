@@ -18,12 +18,12 @@ export default function Search() {
     setLoading(true);
     apiClient("/books")
       .then((res) => {
-        console.log(res.data.payload.docs);
+        // console.log(res.data.payload.docs);
         setBooks(res.data.payload.docs);
         setLoading(false);
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
         setLoading(false);
       });
   }, []);

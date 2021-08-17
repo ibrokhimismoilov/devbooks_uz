@@ -14,8 +14,8 @@ export default function BookSingle({ books }) {
       const { data } = await apiClient(`/books/${params.id}`);
       if (data.success) {
         setBook(data.payload.book);
+        console.log(data.payload.book);
       } else {
-        console.log(data);
       }
     } catch (err) {
       console.log(err);
@@ -26,7 +26,7 @@ export default function BookSingle({ books }) {
     didMount();
   }, []);
 
-  console.log("Single book => ", book);
+  // console.log("Single book => ", book);
 
   return (
     <div className="books-single">

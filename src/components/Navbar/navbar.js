@@ -66,7 +66,7 @@ export default function Navbar() {
             <Link
               onClick={() => setMobileToggler(false)}
               className="navbar__user-link"
-              to="/user"
+              to="/user-settings"
             >
               {user?.user?.firstName}
             </Link>
@@ -90,13 +90,6 @@ export default function Navbar() {
               to="/books/my-books"
             >
               My books
-            </Link>
-            <Link
-              onClick={() => setMobileToggler(false)}
-              className="navbar__user-link"
-              to="/user-settings"
-            >
-              Settings
             </Link>
             <span className="navbar__user-link" onClick={logoutHandler}>
               Log out

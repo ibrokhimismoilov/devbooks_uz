@@ -14,12 +14,12 @@ export default function Authors() {
     setLoading(true);
     apiClient("/authors")
       .then((res) => {
-        console.log(res.data.payload);
+        // console.log(res.data.payload);
         setAuthors(res.data.payload);
         setLoading(false);
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
         setLoading(false);
       });
   }, []);

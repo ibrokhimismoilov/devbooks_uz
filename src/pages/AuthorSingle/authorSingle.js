@@ -11,13 +11,13 @@ export default function AuthorSingle({ authors }) {
     try {
       const { data } = await apiClient(`/authors/${params.id}`);
       if (data.success) {
-        console.log(data.payload);
+        // console.log(data.payload);
         setAuthor(data.payload);
       } else {
-        console.log(data);
+        // console.log(data);
       }
     } catch (err) {
-      console.log(err);
+      // console.log(err);
     }
   };
 
@@ -36,11 +36,19 @@ export default function AuthorSingle({ authors }) {
             <p>Author firstName: {author.firstName}</p>
             <p>Author lastName: {author.lastName}</p>
             <p>Author id: {author._id}</p>
-            <p>Author date_of_birth: {new Date(author.date_of_birth).toLocaleDateString()}</p>
-            <p>Author date_of_death: {new Date(author.date_of_death).toLocaleDateString()}</p>
+            <p>
+              Author date_of_birth:{" "}
+              {new Date(author.date_of_birth).toLocaleDateString()}
+            </p>
+            <p>
+              Author date_of_death:{" "}
+              {new Date(author.date_of_death).toLocaleDateString()}
+            </p>
             <p>Author __v: {author.__v}</p>
           </>
-        ) : <LoaderGrid />}
+        ) : (
+          <LoaderGrid />
+        )}
       </div>
     </div>
   );

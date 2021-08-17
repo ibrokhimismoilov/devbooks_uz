@@ -38,14 +38,14 @@ export default function Books() {
     setLoading(true);
     try {
       const { data } = await apiClient("/books");
-      console.log("Fetch data => ", data);
+      // console.log("Fetch data => ", data);
       const { docs, ...restPagination } = data.payload;
       setPagination(restPagination);
       setBooks(docs);
       setCategoryData(docs);
       setLoading(false);
     } catch (err) {
-      console.log("Fetch err => ", err);
+      // console.log("Fetch err => ", err);
       setLoading(false);
     }
   };
@@ -54,12 +54,12 @@ export default function Books() {
     setLoading(true);
     try {
       const { data } = await apiClient(`/books/search?title=${searchData}`);
-      console.log(data.payload);
+      // console.log(data.payload);
       setBooks(data.payload);
       setCategoryData(data.payload);
       setLoading(false);
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       setLoading(false);
     }
   };
@@ -80,7 +80,7 @@ export default function Books() {
     setLoading(true);
     try {
       const { data } = await apiClient(`/books?page=${page}`);
-      console.log("Query Books data =>>>", data);
+      // console.log("Query Books data =>>>", data);
       const { docs, ...restPagination } = data.payload;
       setPagination(restPagination);
       setBooks(docs);
@@ -88,7 +88,7 @@ export default function Books() {
       setActiveCategory(1);
       setLoading(false);
     } catch (err) {
-      console.log("Query Books err =>>>", err);
+      // console.log("Query Books err =>>>", err);
       setLoading(false);
     }
   };
@@ -162,7 +162,7 @@ export default function Books() {
     setCategoryData(newBooks);
   };
 
-  console.log(categoryData);
+  // console.log(categoryData);
 
   return (
     <div className="books">

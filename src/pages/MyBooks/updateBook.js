@@ -1,6 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
-import { useHistory } from "react-router-dom";
-import Swal from "sweetalert2";
+import React, { useEffect, useState } from "react";
+import { useHistory, useParams } from "react-router-dom";
 import apiClient from "../../services/apiClient";
 import defaultImg from "../../assets/images/books/defaultAddBook.svg";
 import { getValidInputData } from "../../utils/validInputData";
@@ -16,10 +15,12 @@ const initialState = {
   price: "",
   category: "",
 };
+
 const categories = ["classic", "biography", "science"];
 
-export default function AddBook() {
+export default function UpdateBook() {
   const history = useHistory();
+  const params = useParams();
   const [uploadImg, setUploadImg] = useState("");
   const [authors, setAuthors] = useState([]);
   const [value, setValue] = useState(initialState);
@@ -27,27 +28,53 @@ export default function AddBook() {
   const [authorsError, setAuthorsError] = useState("");
   const [waitResAnimate, setWaitResAnimate] = useState(false);
   const [uploadError, setUploadError] = useState("");
-  const fileRef = useRef();
-  const imgRef = useRef();
+  // const fileRef = useRef();
+  // const imgRef = useRef();
+
+  const fetchAuthors = async () => {
+    try {
+      const { data } = await apiClient("/authors");
+      if (data.success) {
+        setAuthors(data.payload);
+      } else {
+        setAuthorsError(
+          data?.message || data?.msg || "Aftorlarni yuklay olmadi"
+        );
+      }
+    } catch (err) {
+      setAuthorsError(err?.message || err?.msg || "Aftorlarni yuklay olmadi");
+    }
+  };
 
   useEffect(() => {
-    // Fetching Authors
+    fetchAuthors();
+
     (async () => {
       try {
-        const { data } = await apiClient("/authors");
+        const { data } = await apiClient(`/books/${params.id}`);
+        // console.log("data => ", data.payload.book);
         if (data.success) {
-          setAuthors(data.payload);
-          setValue((prev) => ({
-            ...prev,
-            author: data.payload.length ? data.payload[0]._id : "",
-          }));
+          const {
+            __v,
+            isFeatured,
+            isPublished,
+            rate,
+            updatedAt,
+            views,
+            _id,
+            author,
+            ...restBook
+          } = data.payload.book;
+          setValue(restBook);
         } else {
+          console.log("UpdateBook success=false =>", data);
           setAuthorsError(
             data?.message || data?.msg || "Aftorlarni yuklay olmadi"
           );
         }
       } catch (err) {
-        setAuthorsError(err?.message || err?.msg || "Aftorlarni yuklay olmadi");
+        console.log("UpdateBook catch(err) =>", err);
+        // setAuthorsError(err?.message || err?.msg || "Aftorlarni yuklay olmadi");
       }
     })();
   }, []);
@@ -56,60 +83,61 @@ export default function AddBook() {
     const { value, name } = e.target;
     setValue((prev) => ({ ...prev, [name]: value }));
   };
+  console.log(value);
 
-  const uploadImgHandler = (e) => {
-    if (e.target.files[0]) {
-      var reader = new FileReader();
-      reader.onload = function (e) {
-        setUploadImg(e.target.result);
-      };
-      reader.readAsDataURL(e.target.files[0]);
-    }
-  };
+  // const uploadImgHandler = (e) => {
+  //   if (e.target.files[0]) {
+  //     var reader = new FileReader();
+  //     reader.onload = function (e) {
+  //       setUploadImg(e.target.result);
+  //     };
+  //     reader.readAsDataURL(e.target.files[0]);
+  //   }
+  // };
+
+  // if (fileRef?.current?.files[0] && imgRef?.current?.files[0]) {
+  //   console.log(fileRef.current.files[0]);
+  //   console.log(imgRef.current.files[0]);
+  // }
 
   const submitHandler = async (e) => {
     e.preventDefault();
     setWaitResAnimate(true);
+    console.log("value >>>>", value);
     for (let i = 0; i < e.target.length; i++) {
       e.target[i].setAttribute("disabled", "disabled");
     }
+
     try {
-      const formDataToSubmit = getValidInputData(value);
+      const formDataToSubmit = getValidInputData(value, ["imageLink"]);
 
       const formData = new FormData();
       for (let x in formDataToSubmit) {
         formData.append(x, formDataToSubmit[x]);
       }
 
-      if (fileRef?.current?.files[0] && imgRef?.current?.files[0]) {
-        formData.append("files", fileRef?.current?.files[0]);
-        formData.append("files", imgRef?.current?.files[0]);
-      }
+      // if (fileRef?.current?.files[0]) {
+      //   formData.append("files", fileRef?.current?.files[0]);
+      // }
+
+      // if (imgRef?.current?.files[0]) {
+      //   formData.append("files", imgRef?.current?.files[0]);
+      // }
 
       // Display the key/value pairs
       // for (var pair of formData.entries()) {
       //   console.log("formData =>", pair[0] + ", " + pair[1]);
       // }
 
-      const { data } = await apiClient.post("/books", formData);
-      // console.log("data =>", data);
+      const { data } = await apiClient.patch(
+        `/books/${params.id}`,
+        formDataToSubmit
+      );
+      //   console.log("data =>", data);
 
       if (data.success) {
         // console.log("success=true", data);
-        Swal.fire({
-          title: "Muoffaqiyatlik",
-          text: "Kitob Muoffaqiyatlik qo'shildi",
-          icon: "success",
-          showCancelButton: true,
-          cancelButtonText: "Mening kitoblarim",
-          confirmButtonText: "Yana kitob qo'shish",
-        }).then(({ value }) => {
-          if (!value) {
-            history.replace("/books/my-books");
-          }
-          setValue({ author: authors[0]._id, ...initialState });
-          setUploadError("");
-        });
+        history.replace("/books/my-books");
       } else {
         // console.log("success=false: err =>", data);
         const msg = data?.msg;
@@ -141,21 +169,20 @@ export default function AddBook() {
     <form className="add" onSubmit={submitHandler}>
       <div className="add__img">
         <div className="add__img-inner">
-          <img src={uploadImg || defaultImg} alt="author" />
-          <label className="add__form-btn">
+          <img src={uploadImg || value.imageLink || defaultImg} alt="author" />
+          {/* <label className="add__form-btn">
             <input
               type="file"
               ref={imgRef}
-              onChange={uploadImgHandler}
+              // onChange={uploadImgHandler}
               hidden
-              required
             />
             Upload Image
-          </label>
-          <label className="add__form-btn">
-            <input type="file" ref={fileRef} hidden required />
+          </label> */}
+          {/* <label className="add__form-btn">
+            <input type="file" ref={fileRef} hidden />
             Upload File
-          </label>
+          </label> */}
         </div>
       </div>
       <div className="add__form">

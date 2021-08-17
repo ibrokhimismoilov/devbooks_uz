@@ -14,13 +14,13 @@ export default function TabSettings() {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    console.log("Language saved to redux store");
+    // console.log("Language saved to redux store");
     dispatch(updateLanguage(language));
     dispatch(updateTheme(theme));
   };
 
-  console.log("theme =>", theme);
-  console.log("language =>", language);
+  // console.log("theme =>", theme);
+  // console.log("language =>", language);
 
   return (
     <form className="user-settings__tab-item" onSubmit={onSubmit}>

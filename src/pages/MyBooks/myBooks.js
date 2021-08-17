@@ -9,7 +9,6 @@ import emptyBookShelf from "../../assets/images/books/bookshelf.jpg";
 import { FaRegMoneyBillAlt, FaRegEye } from "react-icons/fa";
 import { BiBookAlt } from "react-icons/bi";
 import { AiOutlineUser } from "react-icons/ai";
-import AddBook from "../AddBook/addBook";
 
 export default function MyBooks() {
   const [books, setBooks] = useState([]);
@@ -24,7 +23,7 @@ export default function MyBooks() {
         setBooks(data.payload);
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
     setLoading(false);
   };
@@ -39,11 +38,11 @@ export default function MyBooks() {
       await apiClient.delete("/books/" + id);
       getMyBooks();
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
-  console.log(books);
+  // console.log(books);
 
   return (
     <div className="books">

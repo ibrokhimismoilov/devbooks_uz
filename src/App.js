@@ -12,12 +12,11 @@ import SignIn from "./pages/Auth/SignIn";
 import SignUp from "./pages/Auth/SignUp";
 import Authors from "./pages/Authors";
 import Books from "./pages/Books";
-import Home from "./pages/Home";
+// import Home from "./pages/Home";
 import AuthorSingle from "./pages/AuthorSingle";
 import BookSingle from "./pages/BookSingle";
 import AddBook from "./pages/AddBook";
 import AddAuthor from "./pages/AddAuthor";
-import UserPage from "./pages/UserPage";
 import UserSettings from "./pages/UserSettings";
 
 // AUTH REDUX
@@ -45,8 +44,11 @@ export default function App() {
           <Route exact path="/books/add-book" component={AddBook} />
           <Route exact path="/books/update/:id" component={UpdateBook} />
           <Route exact path="/books/:id" component={BookSingle} />
-          <Route exact path="/user-settings" component={UserSettings} />
-          <Route exact path="/user" component={UserPage} />
+          <Route
+            exact
+            path={["/user-settings", "/user"]}
+            component={UserSettings}
+          />
           <Route component={NotFound} />
         </Switch>
       </>
