@@ -5,7 +5,7 @@
 
 > This is React book app store for learning Reactjs
 
-### 🏠 [Homepage](devbooks.uz)
+### 🏠 [Homepage](https://devbooks-uz.vercel.app)
 
 ## Install
 
@@ -29,12 +29,13 @@ yarn test
 
 👤 **Ibrokhim Ismoilov**
 
-* Website: https://Ibrokhim.uz
-* Github: [@ibrokhim017](https://github.com/ibrokhim017)
+- Website: https://Ibrokhim.uz
+- Github: [@ibrokhim017](https://github.com/ibrokhim017)
 
 ## Show your support
 
 Give a ⭐️ if this project helped you!
 
-***
+---
+
 _This README was generated with ❤️ by [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_

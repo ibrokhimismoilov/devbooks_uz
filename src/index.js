@@ -11,10 +11,13 @@ console.log("Store: ", store);
 ReactDOM.render(
   <BrowserRouter>
     <Provider store={store}>
-      <PersistGate loading={<h1>Loading persist gade...</h1>} persistor={persistor}>
+      <PersistGate
+        loading={<h1>Loading persist gade...</h1>}
+        persistor={persistor}
+      >
         <App />
       </PersistGate>
     </Provider>
   </BrowserRouter>,
-  document.getElementById("root")
+  document.getElementById("Ibrokhim")
 );
