@@ -1,2 +1,2 @@
-import Authors from './authors';
+import Authors from "./Authors";
 export default Authors;
