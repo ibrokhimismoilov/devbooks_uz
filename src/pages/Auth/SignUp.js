@@ -8,7 +8,6 @@ import { updateUserAction } from "../../store/actions/userActions";
 import { handleErrorObject } from "../../utils/handleErrorObject";
 
 export default function SignUp() {
-
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -31,7 +30,7 @@ export default function SignUp() {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    
+
     setWaitResAnimate(true);
     for (let i = 0; i < e.target.length; i++) {
       e.target[i].setAttribute("disabled", "disabled");
@@ -41,7 +40,7 @@ export default function SignUp() {
       const { data } = await apiClient.post("/sign-up", value);
       setWaitResAnimate(false);
       if (data.success) {
-        dispatch(updateUserAction({token: data.token, user: data.user}));
+        dispatch(updateUserAction({ token: data.token, user: data.user }));
         history.replace("/");
       } else {
         const msg = handleErrorObject(data?.msg);
@@ -60,8 +59,6 @@ export default function SignUp() {
       }
     }
   };
-
-
 
   let waitAnimate = null;
   if (waitResAnimate) {
@@ -129,7 +126,7 @@ export default function SignUp() {
               onChange={inputHandler}
               // required
             />
-          <InputErrorMessages type="email" errorObj={errors} />
+            <InputErrorMessages type="email" errorObj={errors} />
           </div>
           <div className="auth__form-inputbox">
             <input

@@ -23,6 +23,7 @@ import UserSettings from "./pages/UserSettings";
 // AUTH REDUX
 // import { clearUserAction, updateUserAction } from "./store/actions/userActions";
 import MyBooks from "./pages/MyBooks";
+import UpdateBook from "./pages/MyBooks/updateBook";
 
 export default function App() {
   const { token } = useSelector((state) => state.user);
@@ -42,6 +43,7 @@ export default function App() {
           <Route exact path="/books" component={Books} />
           <Route exact path={["/books/my-books", "/"]} component={MyBooks} />
           <Route exact path="/books/add-book" component={AddBook} />
+          <Route exact path="/books/update/:id" component={UpdateBook} />
           <Route exact path="/books/:id" component={BookSingle} />
           <Route exact path="/user-settings" component={UserSettings} />
           <Route exact path="/user" component={UserPage} />

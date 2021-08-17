@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import defaultBookImg from "../../assets/images/books/book.svg";
 import LoaderGrid from "../../components/Loader/LoaderGrid";
 import apiClient from "../../services/apiClient";
@@ -9,6 +9,7 @@ import emptyBookShelf from "../../assets/images/books/bookshelf.jpg";
 import { FaRegMoneyBillAlt, FaRegEye } from "react-icons/fa";
 import { BiBookAlt } from "react-icons/bi";
 import { AiOutlineUser } from "react-icons/ai";
+import AddBook from "../AddBook/addBook";
 
 export default function MyBooks() {
   const [books, setBooks] = useState([]);
@@ -102,12 +103,12 @@ export default function MyBooks() {
                       >
                         read
                       </button>
-                      <button
+                      <Link
                         className="btn btn-edit"
-                        // onClick={() => putItem(book._id)}
+                        to={`/books/update/${book._id}`}
                       >
                         Edit
-                      </button>
+                      </Link>
                     </div>
                   </div>
                 );

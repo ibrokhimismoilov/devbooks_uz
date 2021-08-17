@@ -1,7 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Header from "../../components/Header";
-import { RiBookFill, RiVolumeUpFill } from "react-icons/ri";
 import { useEffect, useState } from "react";
 import defaultImg from "../../assets/images/authors/avloniy.svg";
 import apiClient from "../../services/apiClient";
@@ -30,13 +29,6 @@ export default function Authors() {
       <Header />
       <div className="auto-container">
         <h1 className="authors-title">Barcha mualliflar</h1>
-        {/* <h1 className="authors-title">Asosiy kategoriyalar</h1> */}
-        {/* <div className="authors__filter">
-          <button className="authors__filter-btn">Temuriylar davri</button>
-          <button className="authors__filter-btn">Jadid adabiyoti</button>
-          <button className="authors__filter-btn">Sovet davri</button>
-          <button className="authors__filter-btn">Mustaqillik davri</button>
-        </div> */}
         <div className="authors__wrapper">
           {!loading ? (
             authors.map((author) => {
@@ -58,10 +50,6 @@ export default function Authors() {
                       {new Date(author.date_of_birth).toLocaleDateString()} -{" "}
                       {new Date(author.date_of_death).toLocaleDateString()}
                     </p>
-                    {/* <p className="icon-text">
-                      <RiBookFill /> {author.books} - <RiVolumeUpFill />{" "}
-                      {author.audios}
-                    </p> */}
                   </div>
                 </Link>
               );
