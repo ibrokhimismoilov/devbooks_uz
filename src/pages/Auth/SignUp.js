@@ -50,7 +50,7 @@ export default function SignUp() {
         e.target[i].removeAttribute("disabled");
       }
     } catch (err) {
-      console.log("Register error", err.response);
+      console.log("Register error catch =>>", err);
       const msg = handleErrorObject(err.response?.data?.msg);
       setErrors(msg);
       setWaitResAnimate(false);

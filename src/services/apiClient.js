@@ -10,8 +10,7 @@ const apiClient = axios.create({
 
 apiClient.interceptors.request.use(
   (configs) => {
-    const token =
-      store.getState().user.token || "";
+    const token = store.getState().user.token || "";
     configs.headers.Authorization = token ? `Berear ${token}` : "";
     configs.headers.language = "uz";
     return configs;

@@ -31,4 +31,32 @@
       background: #f8f8f8;
     }
   }
+  &.btn-delete {
+    box-shadow: 0 0 5px rgba(#000, 0.5);
+    color: #fff;
+    background: red;
+    border: 1px solid red;
+
+    &:focus,
+    &:hover {
+      outline: none;
+      background: #fff;
+      color: red;
+    }
+
+    &:active {
+      background: #f8f8f8;
+    }
+  }
+
+  &-group {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center !important;
+    row-gap: 10px;
+    margin: 0 auto;
+    .btn {
+      margin: 5px;
+    }
+  }
 }

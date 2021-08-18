@@ -105,6 +105,9 @@
         }
       }
     }
+    &-img {
+      box-shadow: 0 0 3px rgba(#fff, 0.4);
+    }
 
     &-dropdown {
       position: absolute;
@@ -225,7 +228,7 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      
+
       &.open {
         .navbar__toggle-icon {
           background: $text-primary;

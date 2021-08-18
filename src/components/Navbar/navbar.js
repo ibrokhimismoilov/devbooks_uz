@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, NavLink, useHistory } from "react-router-dom";
 import { NavbarSection } from "./navbarStyled";
-import userImg from "../../assets/images/avatar.svg";
+import defaultImage from "../../assets/images/user.png";
 import { BsChevronDown } from "react-icons/bs";
 import { useSelector, useDispatch } from "react-redux";
 import { clearUserAction } from "../../store/actions/userActions";
@@ -59,7 +59,7 @@ export default function Navbar() {
 
         <div className="navbar__user">
           <div className="navbar__user-title">
-            <img className="navbar__user-img" src={userImg} alt="avatar" />
+            <img className="navbar__user-img" src={defaultImage} alt="avatar" />
             <BsChevronDown />
           </div>
           <div className="navbar__user-dropdown">
