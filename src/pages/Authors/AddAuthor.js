@@ -13,7 +13,7 @@ const initialState = {
   isDead: false,
 };
 
-export default function AddBook() {
+export default function AddAuthor() {
   const history = useHistory();
   const [waitResAnimate, setWaitResAnimate] = useState(false);
   const [uploadError, setUploadError] = useState(null);

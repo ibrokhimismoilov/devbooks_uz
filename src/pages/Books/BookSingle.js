@@ -4,7 +4,7 @@ import apiClient from "../../services/apiClient";
 import defaultBookImg from "../../assets/images/books/book.svg";
 import LoaderGrid from "../../components/Loader/LoaderGrid";
 
-export default function BookSingle({ books }) {
+export default function BookSingle() {
   const [book, setBook] = useState(false);
 
   const params = useParams();
