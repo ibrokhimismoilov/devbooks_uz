@@ -135,9 +135,10 @@ export default function Books() {
 
   const CategoryTabs = () => (
     <div className="books__filter">
-      {categoryBtns.map((item) => {
+      {categoryBtns.map((item, index) => {
         return (
           <button
+            key={index}
             className={`books__filter-btn ${
               item.id === activeCategory ? "active" : ""
             }`}

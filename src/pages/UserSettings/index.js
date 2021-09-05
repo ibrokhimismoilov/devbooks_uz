@@ -58,81 +58,83 @@ export default function UserSettings() {
     }
   };
 
-  const chekPassword = (data, newPass = "", confirmPas = "") => {
-    // if (!newPass.trim().length && !confirmPas.trim().length) {
-    //   return { ...data };
-    // } else if (newPass.length < 6 || confirmPas.length < 6) {
-    //   return "Parol 6 tadan kam bo'lmasligi kerak";
-    // } else if (newPass !== confirmPas) {
-    //   return "Yangi parollar mos emas";
-    // } else {
-    //   return { password: newPass, ...data };
-    // }
-    if (newPass.length && confirmPas.length) {
-      return "Password backend dan ishlamayabdi, Parolni o'zgartirmang!";
-    } else if (newPass.length < 0 || confirmPas.length < 0) {
-      return { ...data };
-    }
-  };
+  // const chekPassword = (data, newPass = "", confirmPas = "") => {
+  //   // if (!newPass.trim().length && !confirmPas.trim().length) {
+  //   //   return { ...data };
+  //   // } else if (newPass.length < 6 || confirmPas.length < 6) {
+  //   //   return "Parol 6 tadan kam bo'lmasligi kerak";
+  //   // } else if (newPass !== confirmPas) {
+  //   //   return "Yangi parollar mos emas";
+  //   // } else {
+  //   //   return { password: newPass, ...data };
+  //   // }
+  //   if (newPass.length && confirmPas.length) {
+  //     return "Password backend dan ishlamayabdi, Parolni o'zgartirmang!";
+  //   } else if (newPass.length < 0 || confirmPas.length < 0) {
+  //     return { ...data };
+  //   }
+  // };
 
   const onSubmit = async (e) => {
     e.preventDefault();
     const { newPassword, confirmPassword, ...data } = updateUser;
 
-    const resultData = chekPassword(data, newPassword, confirmPassword);
+    // const resultData = chekPassword(data, newPassword, confirmPassword);
 
-    if (typeof resultData !== "string") {
-      const validData = getValidInputData(resultData);
-      try {
-        for (let i = 0; i < e.target.length; i++) {
-          e.target[i].setAttribute("disabled", "disabled");
-        }
-        const { data } = await apiClient.patch("/users", validData);
-        dispatch(updateTheme(theme));
-        console.log("data =>> ", data);
-        if (data.success) {
-          dispatch(updateUserAction({ user: data.payload, token: token }));
-          Swal.fire({
-            title: "Muoffaqiyatlik",
-            text: "User updated",
-            icon: "success",
-            showCancelButton: true,
-            cancelButtonText: "Home page",
-            confirmButtonText: "Ok",
-          }).then(({ value }) => {
-            if (!value) {
-              history.replace("/");
-            }
-          });
-        } else {
-          Swal.fire({
-            title: "Xatolik",
-            text: data.error,
-            icon: "error",
-          });
-        }
-        for (let i = 0; i < e.target.length; i++) {
-          e.target[i].removeAttribute("disabled");
-        }
-      } catch (err) {
-        const msg = err.response?.data?.msg || err.response?.data?.error;
+    // if (typeof resultData !== "string") {
+    // const validData = getValidInputData(resultData);
+    const validData = getValidInputData(data);
+    try {
+      for (let i = 0; i < e.target.length; i++) {
+        e.target[i].setAttribute("disabled", "disabled");
+      }
+      console.log("request =>> ", validData);
+      const { data } = await apiClient.patch("/users", validData);
+      dispatch(updateTheme(theme));
+      console.log("res =>> ", data);
+      if (data.success) {
+        dispatch(updateUserAction({ user: data.payload, token: token }));
+        Swal.fire({
+          title: "Muoffaqiyatlik",
+          text: "User updated",
+          icon: "success",
+          showCancelButton: true,
+          cancelButtonText: "Home page",
+          confirmButtonText: "Ok",
+        }).then(({ value }) => {
+          if (!value) {
+            history.replace("/");
+          }
+        });
+      } else {
         Swal.fire({
           title: "Xatolik",
-          text: msg,
+          text: data.error,
           icon: "error",
         });
-
-        for (let i = 0; i < e.target.length; i++) {
-          e.target[i].removeAttribute("disabled");
-        }
       }
-    } else {
+      for (let i = 0; i < e.target.length; i++) {
+        e.target[i].removeAttribute("disabled");
+      }
+    } catch (err) {
+      const msg = err.response?.data?.msg || err.response?.data?.error;
       Swal.fire({
         title: "Xatolik",
-        text: resultData,
+        text: msg,
         icon: "error",
       });
+
+      for (let i = 0; i < e.target.length; i++) {
+        e.target[i].removeAttribute("disabled");
+      }
     }
+    // } else {
+    //   Swal.fire({
+    //     title: "Xatolik",
+    //     text: resultData,
+    //     icon: "error",
+    //   });
+    // }
   };
 
   return (
@@ -173,9 +175,9 @@ export default function UserSettings() {
                 value={updateUser.firstName}
                 onChange={inputHandler}
               />
-              <span className="warning-text err">
+              {/* <span className="warning-text err">
                 Please enter your first name.
-              </span>
+              </span> */}
             </div>
             <div className="user-settings__inputbox">
               <label>Last Name</label>
@@ -186,7 +188,7 @@ export default function UserSettings() {
                 value={updateUser.lastName}
                 onChange={inputHandler}
               />
-              <span className="warning-text">Please enter your last name.</span>
+              {/* <span className="warning-text">Please enter your last name.</span> */}
             </div>
             <div className="user-settings__inputbox inputbox_50">
               <label>Phone</label>
@@ -197,9 +199,9 @@ export default function UserSettings() {
                 value={updateUser.phone}
                 onChange={inputHandler}
               />
-              <span className="warning-text">
+              {/* <span className="warning-text">
                 Please enter your phone number.
-              </span>
+              </span> */}
             </div>
             <div className="user-settings__inputbox inputbox_50">
               <label>Email</label>
@@ -210,9 +212,9 @@ export default function UserSettings() {
                 value={updateUser.email}
                 onChange={inputHandler}
               />
-              <span className="warning-text">
+              {/* <span className="warning-text">
                 Please enter your email address.
-              </span>
+              </span> */}
             </div>
           </div>
           {/* <h1 className="user-settings__title">
@@ -260,7 +262,7 @@ export default function UserSettings() {
             </div>
           </div> */}
           <h1 className="user-settings__title">
-            Change Or Recover Your Password:
+            Change Your Theme or Language:
           </h1>
           <div className="user-settings__input-group">
             <div className="user-settings__inputbox">

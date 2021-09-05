@@ -21,7 +21,7 @@ const categories = ["classic", "biography", "science"];
 export default function UpdateBook() {
   const history = useHistory();
   const params = useParams();
-  const [uploadImg, setUploadImg] = useState("");
+  // const [uploadImg, setUploadImg] = useState("");
   const [authors, setAuthors] = useState([]);
   const [value, setValue] = useState(initialState);
 
@@ -169,7 +169,8 @@ export default function UpdateBook() {
     <form className="add" onSubmit={submitHandler}>
       <div className="add__img">
         <div className="add__img-inner">
-          <img src={uploadImg || value.imageLink || defaultImg} alt="author" />
+          <img src={value.imageLink || defaultImg} alt="author" />
+          {/* <img src={uploadImg || value.imageLink || defaultImg} alt="author" /> */}
           {/* <label className="add__form-btn">
             <input
               type="file"
@@ -225,9 +226,9 @@ export default function UpdateBook() {
               onChange={inputHandler}
               required
             >
-              {categories.map((item) => {
+              {categories.map((item, index) => {
                 return (
-                  <option value={item} key={item}>
+                  <option value={item} key={index}>
                     {item}
                   </option>
                 );

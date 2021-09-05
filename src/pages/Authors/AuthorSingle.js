@@ -25,7 +25,7 @@ export default function AuthorSingle({ authors }) {
     didMount();
   }, []);
 
-  console.log("Single author => ", author);
+  // console.log("Single author => ", author);
 
   return (
     <div className="book-single">

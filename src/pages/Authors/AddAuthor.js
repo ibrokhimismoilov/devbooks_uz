@@ -34,15 +34,6 @@ export default function AddBook() {
       e.target[i].setAttribute("disabled", "disabled");
     }
     try {
-      // const requsetData = value.date_of_death
-      //   ? value
-      //   : {
-      //       firstName: value.firstName,
-      //       lastName: value.lastName,
-      //       date_of_birth: value.date_of_birth,
-      //     };
-      // const { data } = await apiClient.post("/authors", requsetData);
-
       const formDataToSubmit = getValidInputData(value, ["isDead"]);
       const { data } = await apiClient.post("/authors", formDataToSubmit);
 
@@ -65,7 +56,6 @@ export default function AddBook() {
           setValue(initialState);
         });
       } else {
-        // console.log("addBook data success false: ", data?.details[0]?.message);
         const msg = data?.details[0]?.message;
         setUploadError(msg);
       }
@@ -120,7 +110,7 @@ export default function AddBook() {
               type="text"
               placeholder="firstName"
               name="firstName"
-              value={value.firstName}
+              value={value?.firstName}
               onChange={inputHandler}
               required
             />
@@ -130,7 +120,7 @@ export default function AddBook() {
               type="text"
               placeholder="lastName"
               name="lastName"
-              value={value.lastName}
+              value={value?.lastName}
               onChange={inputHandler}
               required
             />
@@ -140,7 +130,7 @@ export default function AddBook() {
               type="date"
               placeholder="date of birth"
               name="date_of_birth"
-              value={value.date_of_birth}
+              value={value?.date_of_birth}
               onChange={inputHandler}
               //   required
             />

@@ -47,8 +47,11 @@ export default function Authors() {
                       {author.firstName} {author.lastName}
                     </h1>
                     <p className="year">
-                      {new Date(author.date_of_birth).toLocaleDateString()} -{" "}
-                      {new Date(author.date_of_death).toLocaleDateString()}
+                      {new Date(author.date_of_birth).toLocaleDateString()}
+                      {author.date_of_death
+                        ? " - " +
+                          new Date(author.date_of_death).toLocaleDateString()
+                        : null}
                     </p>
                   </div>
                 </Link>

@@ -14,7 +14,7 @@ export default function BookSingle({ books }) {
       const { data } = await apiClient(`/books/${params.id}`);
       if (data.success) {
         setBook(data.payload.book);
-        console.log(data.payload.book);
+        // console.log(data.payload.book);
       } else {
       }
     } catch (err) {
