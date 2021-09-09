@@ -5,7 +5,7 @@
 
 > This is React book app store for learning Reactjs
 
-### 🏠 [Homepage](https://devbooks-uz.vercel.app)
+### 🏠 [Homepage](https://devbook-uz.netlify.app/)
 
 ## Install
 
