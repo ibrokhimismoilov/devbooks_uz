@@ -7,19 +7,19 @@ import "./assets/scss/App.scss";
 
 // Pages
 // import Home from "./pages/Home";
-import Books from "./pages/Books";
-import Authors from "./pages/Authors";
+import Books from "./pages/Books/index";
+import Authors from "./pages/Authors/index";
 import AddAuthor from "./pages/Authors/AddAuthor";
 import AuthorSingle from "./pages/Authors/AuthorSingle";
 import MyBooks from "./pages/Books/MyBooks";
 import AddBook from "./pages/Books/AddBook";
 import UpdateBook from "./pages/Books/UpdateBook";
 import BookSingle from "./pages/Books/BookSingle";
-import UserSettings from "./pages/UserSettings";
-import NotFound from "./pages/NotFound";
+import UserSettings from "./pages/UserSettings/index";
+import NotFound from "./pages/NotFound/index";
 import SignIn from "./pages/Auth/SignIn";
 import SignUp from "./pages/Auth/SignUp";
-import Navbar from "./components/Navbar";
+import Navbar from "./components/Navbar/index";
 
 export default function App() {
   const { token } = useSelector((state) => state.user);
