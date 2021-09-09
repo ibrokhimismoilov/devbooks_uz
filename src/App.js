@@ -15,11 +15,11 @@ import MyBooks from "./pages/Books/MyBooks";
 import AddBook from "./pages/Books/AddBook";
 import UpdateBook from "./pages/Books/UpdateBook";
 import BookSingle from "./pages/Books/BookSingle";
-import UserSettings from "./pages/UserSettings/index";
-import NotFound from "./pages/NotFound/notFound";
+import UserSettings from "./pages/UserSettings";
+import NotFound from "./pages/NotFound";
 import SignIn from "./pages/Auth/SignIn";
 import SignUp from "./pages/Auth/SignUp";
-import Navbar from "./components/Navbar/navbar";
+import Navbar from "./components/Navbar";
 
 export default function App() {
   const { token } = useSelector((state) => state.user);

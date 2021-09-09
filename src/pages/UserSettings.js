@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { VscDeviceCamera } from "react-icons/vsc";
-import apiClient from "../../services/apiClient";
-import defaultAvatar from "../../assets/images/user.png";
-import { getValidInputData } from "../../utils/validInputData";
+import apiClient from "../services/apiClient";
+import defaultAvatar from "../assets/images/user.png";
+import { getValidInputData } from "../utils/validInputData";
 import {
   clearUserAction,
   updateTheme,
   updateUserAction,
-} from "../../store/actions/userActions";
+} from "../store/actions/userActions";
 import Swal from "sweetalert2";
 import { useHistory } from "react-router-dom";
 
