@@ -7,7 +7,7 @@ import "./assets/scss/App.scss";
 
 // Pages
 // import Home from "./pages/Home";
-import Books from "./pages/Books/Books";
+import Books from "./pages/Books/books";
 import Authors from "./pages/Authors/Authors";
 import AddAuthor from "./pages/Authors/AddAuthor";
 import AuthorSingle from "./pages/Authors/AuthorSingle";
