@@ -5,8 +5,9 @@ import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import store, { persistor } from "./store";
 import App from "./App";
+// eslint-disable-next-line
 
-console.log("Store: ", store);
+// console.log("Store: ", store);
 
 ReactDOM.render(
   <BrowserRouter>

@@ -46,44 +46,46 @@ export default function UpdateBook() {
     }
   };
 
+  const fetchUpdateBook = async () => {
+    try {
+      const { data } = await apiClient(`/books/${params?.id}`);
+      // console.log("data => ", data.payload.book);
+      if (data.success) {
+        const {
+          __v,
+          isFeatured,
+          isPublished,
+          rate,
+          updatedAt,
+          views,
+          _id,
+          author,
+          ...restBook
+        } = data.payload.book;
+        setValue(restBook);
+      } else {
+        console.log("UpdateBook success=false =>", data);
+        setAuthorsError(
+          data?.message || data?.msg || "Aftorlarni yuklay olmadi"
+        );
+      }
+    } catch (err) {
+      console.log("UpdateBook catch(err) =>", err);
+      // setAuthorsError(err?.message || err?.msg || "Aftorlarni yuklay olmadi");
+    }
+  };
+
   useEffect(() => {
     fetchAuthors();
-
-    (async () => {
-      try {
-        const { data } = await apiClient(`/books/${params.id}`);
-        // console.log("data => ", data.payload.book);
-        if (data.success) {
-          const {
-            __v,
-            isFeatured,
-            isPublished,
-            rate,
-            updatedAt,
-            views,
-            _id,
-            author,
-            ...restBook
-          } = data.payload.book;
-          setValue(restBook);
-        } else {
-          console.log("UpdateBook success=false =>", data);
-          setAuthorsError(
-            data?.message || data?.msg || "Aftorlarni yuklay olmadi"
-          );
-        }
-      } catch (err) {
-        console.log("UpdateBook catch(err) =>", err);
-        // setAuthorsError(err?.message || err?.msg || "Aftorlarni yuklay olmadi");
-      }
-    })();
+    fetchUpdateBook();
   }, []);
 
   const inputHandler = (e) => {
     const { value, name } = e.target;
     setValue((prev) => ({ ...prev, [name]: value }));
   };
-  console.log(value);
+
+  // console.log(value);
 
   // const uploadImgHandler = (e) => {
   //   if (e.target.files[0]) {

@@ -17,7 +17,7 @@ const categoryBtns = [
   { name: "science", id: 4 },
 ];
 
-export default function Books() {
+const Books = () => {
   // book category
   const [activeCategory, setActiveCategory] = useState(1);
   const [categoryData, setCategoryData] = useState([]);
@@ -239,4 +239,6 @@ export default function Books() {
       </div>
     </div>
   );
-}
+};
+
+export default Books;
